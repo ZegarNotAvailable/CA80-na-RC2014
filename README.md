@@ -1,7 +1,7 @@
 # CA80 na platformie RC2014
 - Postanowiłem opracować nową wersję wykorzystując zalety starego CA80 - modułowość i nowego - uproszczona klawiatura.
 - Szczegółowy opis projektu jest na blogu [KlonCA80](https://klonca80.blogspot.com).
-[Nowy CA80](https://youtu.be/DX81GWKvyLs).
+- [YouTube](https://youtu.be/DX81GWKvyLs).
 ### Podział oryginalnej konstrukcji na mniejsze moduły.
 - Płyta główna została podzielona na dwa moduły: CPU + RAM + ROM oraz SYSTEM I/O.
 - MIK89 jest prawie nie zmieniony. Dodałem licznik umożliwiający uzyskanie sygnału NMI z Z80 CTC.
