@@ -3,7 +3,7 @@
 - Szczegółowy opis projektu jest na blogu [KlonCA80](https://klonca80.blogspot.com).
 - [YouTube](https://youtu.be/DX81GWKvyLs).
 ### Podział oryginalnej konstrukcji na mniejsze moduły.
-- Płyta główna została podzielona na dwa moduły: CPU + RAM + ROM (można ją zastąpić np. [sc108](https://smallcomputercentral.com/sc108-z80-processor-rc2014/)) oraz SYSTEM I/O.
+- Płyta główna została podzielona na dwa moduły: CPU + RAM + ROM (można go zastąpić np. [sc108](https://smallcomputercentral.com/sc108-z80-processor-rc2014/)) oraz SYSTEM I/O.
 - MIK89 jest prawie nie zmieniony. Dodałem licznik umożliwiający uzyskanie sygnału NMI z Z80 CTC.
 - MIK1 - UART na i8251.
 - Płyty bazowej nie projektuję, bo można wybrać z gotowych np. [sc112](https://smallcomputercentral.com/sc112-modular-backplane-rc2014/).
