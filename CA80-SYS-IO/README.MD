@@ -5,4 +5,5 @@
     - wyświetlacza siedmiosegmentowego
     - magnetofonu
 - Złącza ZK i ZW zostały połączone w jedno IDC26.
-- Złącze ZA jest po przeciwnej stronie i zawiera sygnały magnetofonu oraz brzęczyka klawiatury. 
+- Złącze ZA jest po przeciwnej stronie i zawiera sygnały magnetofonu oraz brzęczyka klawiatury.
+- Zworka CA80//MSID-RTS jest w niewygodnym miejscu, więc prawdopodobnie zrobię nową wersję z przełącznikiem na skośnej krawędzi płytki. 
