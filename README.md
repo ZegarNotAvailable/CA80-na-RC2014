@@ -1,4 +1,5 @@
 # CA80 na platformie RC2014
+![CA80](https://raw.githubusercontent.com/ZegarNotAvailable/CA80-na-RC2014/main/CA80-RC2014.jpg)
 - Postanowiłem opracować nową wersję wykorzystując zalety starego CA80 - modułowość i nowego - uproszczona klawiatura.
 - Szczegółowy opis projektu jest na blogu [KlonCA80](https://klonca80.blogspot.com).
 - [YouTube](https://youtu.be/DX81GWKvyLs).
@@ -12,6 +13,7 @@
 - CAFL emulator magnetofonu - pamięć masowa.
 - Bootloader oparty o AVR. Pomysł zapożyczony z projektu [Z80-MBC2](https://hackaday.io/project/159973-z80-mbc2-a-4-ics-homebrew-z80-computer).
 ### Wykorzystanie kalkulatora ELWRO144 jako terminala - zintegrowanej klawiatury z wyświetlaczem.
+![ELWRO144](https://raw.githubusercontent.com/ZegarNotAvailable/CA80-na-RC2014/main/CA80-ELWRO144.jpg)
 - Płytka klawiatury z gumowymi switchami.
 - Płytka wyświetlacza VFD pełniąca jednocześnie funkcję złącza z komputerem za pomocą taśmy IDC.
 ## Projekty modułów.
