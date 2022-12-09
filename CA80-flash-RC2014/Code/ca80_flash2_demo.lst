@@ -1,0 +1,1368 @@
+0000-                 13               .sf CA80_FLASH2_demo.sym
+0000-                 14               .in ca80.inc
+0000-            I     1
+00E0-            I     2       USER8255        .eq             $E0
+0000-            I     3       PA                  .eq         0
+0001-            I     4       PB                  .eq         1
+0002-            I     5       PC                  .eq         2
+0003-            I     6       CTRL              .eq           3
+0000-            I     7             ;
+0000-            I     8             ;LICZNIKI PROGRAMOWE
+0000-            I     9             ;
+FFE8-            I    10       LCI:      .eq $FFE8
+FFE9-            I    11       SYG:      .eq $FFE9
+FFEA-            I    12       TIME:     .eq $FFEA             ; Licznik binarny %256 (liczy w dÛ≥) co 2 ms
+0000-            I    13             ;
+0000-            I    14             ;ZEGAR CZASU RZECZYWISTEGO
+0000-            I    15             ;
+FFEB-            I    16       MSEK:     .eq $FFEB             ; <0, 4>
+FFEC-            I    17       SETSEK:   .eq $FFEC             ; <0, 99> setne sekundy
+FFED-            I    18       SEK:      .eq $FFED             ; <0, 59> sekundy
+FFEE-            I    19       MIN:      .eq $FFEE             ; <0, 59> minuty
+FFEF-            I    20       GODZ:     .eq $FFEF             ; <0, 23> godziny
+FFF0-            I    21       DNITYG:   .eq $FFF0             ; <7, 6, 5, 4, 3, 2, 1>
+FFF1-            I    22       DNIM:     .eq $FFF1             ; <1 ... > dni miesiπca
+FFF2-            I    23       MIES:     .eq $FFF2             ; <1, 12> miesiπce
+FFF3-            I    24       LATA:     .eq $FFF3             ; <0, 99> rok
+0000-            I    25             ;
+0000-            I    26                               ;       BUFOR WYåWIETLACZA
+0000-            I    27             ;
+FFF7-            I    28       CYF0        .eq $FFF7
+FFF8-            I    29       CYF1        .eq $FFF8
+FFF9-            I    30       CYF2        .eq $FFF9
+FFFA-            I    31       CYF3        .eq $FFFA
+FFFB-            I    32       CYF4        .eq $FFFB
+FFFC-            I    33       CYF5        .eq $FFFC
+FFFD-            I    34       CYF6        .eq $FFFD
+FFFE-            I    35       CYF7        .eq $FFFE
+0000-            I    36             ;
+0000-            I    37             ; PROCEDURY SYSTEMOWE
+0000-            I    38             ;
+0000-            I    39             ; WYåWIETLACZ
+0000-            I    40             ;
+FFC1-            I    41       APWYS     .eq $FFC1 ; wskazuje po≥oøenie parametru wyúwietlacza
+FFF6-            I    42       PWYS      .eq $FFF6 ; parametr wyúwietlacza
+01AB-            I    43       COM           .eq       $01AB   ; COM - pokazuje znak 7-seg z rejestru C
+01AC-            I    44       COM1      .eq $01AC ; COM1 - pokazuje znak 7-seg z rejestru C bez zmiany PWYS
+0010-            I    45       CLR           .eq       $0010   ; CLR - kasowanie wyswietlacza
+0011-            I    46       CLR1      .eq $0011 ; CLR1 - kasowanie wyswietlacza bez zmiany PWYS
+01D4-            I    47       PRINT       .eq $01D4   ; PRINT - drukuje komunikat z (HL)
+01D5-            I    48       PRINT1    .eq $01D5 ; PRINT1 - drukuje komunikat z (HL) bez zmiany PWYS
+01E0-            I    49       CO        .eq $01E0 ; CO - wyswietlenie cyfry hex
+01E1-            I    50       CO1       .eq $01E1 ; CO1 - wyswietlenie cyfry hex bez zmiany PWYS
+0018-            I    51       LBYTE       .eq $0018   ; LBYTE - wyswietlenie Aku w HEX
+001B-            I    52       LBYTE1    .eq $001B ; LBYTE1 - wyswietlenie Aku w HEX bez zmiany PWYS
+0020-            I    53       LADR      .eq $0020 ; LADR - wyswietlenie HL w HEX
+022D-            I    54       LADR1     .eq $022D ; LADR1 - wyswietlenie HL w HEX bez zmiany PWYS
+022D-            I    55       CZAS        .eq $022D   ; CZAS - pokazuje czas/date
+0000-            I    56             ;
+0000-            I    57             ; KLAWIATURA
+0000-            I    58             ;
+FFC3-            I    59       CSTS      .eq $FFC3 ; CSTS - test czy klawisz nacisniety
+FFC6-            I    60       CI        .eq $FFC6 ; CI - pobranie znaku z klawiatury
+0000-            I    61             ;
+0000-            I    62             ; KLAWIATURA I WYåWIETLACZ
+0000-            I    63             ;
+0007-            I    64       TI        .eq $0007 ; TI - pobranie znaku z echem
+0008-            I    65       TI1       .eq $0008 ; TI1 - pobranie znaku z echem bez zmiany PWYS
+01F4-            I    66       PARAM     .eq $01F4 ; PARAM - pobranie liczby 16-bit do HL z echem
+01F5-            I    67       PARAM1    .eq $01F5 ; PARAM1 - pobranie liczby 16-bit do HL z echem bez zmiany PWYS
+01F8-            I    68       PARA1     .eq $01F8 ; PARA1 - pierwszπ cyfrÍ podajemy w akumulatorze a dalej jak PARAM1
+0213-            I    69       EXPR      .eq $0213 ; EXPR - pobranie ciagu liczb 16bit na stos
+0214-            I    70       EXPR1     .eq $0214 ; EXPR1 - pobranie ciagu liczb 16bit na stos bez zmiany PWYS
+0000-            I    71             ;
+0000-            I    72             ; POMOCNICZE
+0000-            I    73             ;
+023B-            I    74       HILO      .eq $023B ; HILO - iterator, HL++, CY = !(DE >= HL)
+00C9-            I    75       SPEC      .eq $00C9 ; RET - dla obs≥ugi magnetofonu
+0000-            I    76             ;
+0000-            I    77             ; OBS£UGA MAGNETOFONU
+0000-            I    78             ;
+0626-            I    79       ZMAG      .eq $0626 ; zapis na magnetofon
+067B-            I    80       ZEOF      .eq $067B ; zapis rekordu EOF
+071B-            I    81       OMAG      .eq $071B ; odczyt z magnetofonu
+FFB2-            I    82       MAGSP     .eq $FFB2 ; parametr szybkoúci zapisu
+FFB1-            I    83       DLUG      .eq $FFB1 ; d≥ugoúÊ rekordu danych
+0000-            I    84
+00FF-            I    85       EOM       .eq $FF
+00F0-                 15       SYS8255 .eq 0F0H
+0184-                 16       CIM     .eq 184H
+FFB3-                 17       GSTAT   .eq 0FFB3H
+7555-                 18       A5      .eq 7555H       ;adres dla klucza FLASH
+7AAA-                 19       AA      .eq 7AAAH       ;adres dla klucza FLASH
+6000-                 20       FL      .eq 6000H       ;poczatek sektora FLASH
+6FFE-                 21       FLEND   .eq FL+0FFEH    ;adres wskaznika pierwszej wolnej komorki
+00AA-                 22       KA      .eq 0AAH        ;klucz sterujacy EEPROM I FLASH
+0055-                 23       K5      .eq 55H         ;klucz sterujacy EEPROM I FLASH
+E2FD-                 24       MARK    .eq 0E2FDH      ;znacznik poczatku naglowka
+06AB-                 25       PBYTE   .eq 06ABH       ;wyslij bajt na wyj. magn. (monitor CA80)
+5000-                 26       BUFOR   .eq 5000H       ;poczatek bufora w RAM
+1000-                 27       BUF_LEN .eq 1000H       ;d≥ugoúÊ bufora/sektora
+5FFD-                 28       SECT    .eq BUFOR+0FFDH ;numer sektora (LS373)
+5FFE-                 29       BUFEND  .eq BUFOR+0FFEH ;pierwsza wolna komorka do zapisu
+5FD0-                 30       NAME1   .eq BUFOR+0FD0H ;nazwa pierwszego programu w buforze/sektorze
+5FE4-                 31       NAME2   .eq BUFOR+0FE4H ;nazwa drugiego programu w buforze/sektorze
+0000-                 32       ;ACSEC   .eq FL-3        ;ostatnio uzyty sektor (LS373)
+0000-                 33       ;*********************************************************************
+0000-                 34       ; LCD - sterowanie 8-bitowe wyswietlaczem LCD 4 x 20 znakow,
+0000-                 35       ; podlaczony bezpoúrednio do szyny danych
+0000-                 36       ; Enable - 40H, RS - A0, R/W - A1, DATA na D0 .. D7 Z80
+0000-                 37       ;*********************************************************************
+0040-                 38       LCD_E     .eq 040h      ;LCD
+0040-                 39       LCD_IR    .eq LCD_E+0h  ;write only!
+0041-                 40       LCD_WDR   .eq LCD_E+1h  ;write only!
+0043-                 41       LCD_RDR   .eq LCD_E+3h  ;read only!
+0042-                 42       LCD_BUSY  .eq LCD_E+2h  ;read only!
+0000-                 43       ;*********************************************************************
+0080-                 44       L1:          .eq 80h    ; pocz. 1. linii LCD
+00C0-                 45       L2:          .eq 0C0h   ; pocz. 2. linii
+0094-                 46       L3:          .eq 94h    ; pocz. 3. linii
+00D4-                 47       L4:          .eq 0D4h   ; pocz. 4. linii
+0000-                 48       ;*********************************************************************
+0000-                 49       ;4000H - 4FFFH EEPROM Z OPROGRAMOWANIEM
+0000-                 50       ;5000H - 5FFFH RAM BUFOR (6264)
+0000-                 51       ;        5FFDH REJESTR NUMERU SEKTORA (74LS373)
+0000-                 52       ;6000H - 6FFFH SEKTOR FLASH
+0000-                 53       ;7000H - 7FFFH 7555H I 7AAAH KODY STERUJ•CE FLASH (74HC244)
+0000-                 54       ;*********************************************************************
+0000-                 55               .sm code           ;
+4000-                 56               .or $4000          ; U12/C000
+4000-                 57       ;*********************************************************************
+4000-                 58       ;Program testujacy dla pracy krokowej MIK05 str. 187
+4000-                 59       ;*********************************************************************
+4000-3E 55            60 (  7)         ld A,K5
+4002-32 55 C5         61 ( 13)         ld (0C555H),A      ;Docelowo program bedzie w U10
+4005-3A 55 C5         62 ( 13)         ld A,(0C555H)      ;Uruchomienie *80 wymaga 55H
+4008-3E 90            63 (  7)         ld A,90H           ;pod adr. 4001H
+400A-D3 F3            64 ( 11)         out (SYS8255+CTRL),A
+400C-3E 55            65 (  7)         ld A,K5
+400E-D3 F1            66 ( 11)         out (SYS8255+PB),A
+4010-D3 F2            67 ( 11)         out (SYS8255+PC),A
+4012-3E AA            68 (  7)         ld A,KA
+4014-D3 F1            69 ( 11)         out (SYS8255+PB),A
+4016-D3 F2            70 ( 11)         out (SYS8255+PC),A
+4018-C3 00 00         71 ( 10)         jp 0000H
+401B-39 77 71 38 
+     FF               72       KOMFL:  .db 39H, 77H, 71H, 38H, EOM        ;CAFL
+4020-                 73       ;*********************************************************************
+4020-                 74       Flash:
+4020-31 66 FF         75 ( 10)         ld SP,$ff66        ;
+4023-21 85 40         76 ( 10)         ld HL,CIFL         ;Wlaczenie obslugi "G" w NMI
+4026-22 C7 FF         77 ( 20)         ld (CI+1),HL
+4029-                 78               ;ld HL,CSTSFL
+4029-                 79               ;ld (CSTS+1),HL
+4029-CD 00 4E         80 ( 17)         CALL LCD_INIT
+402C-                 81       CAFL:
+402C-31 66 FF         82 ( 10)         ld SP,$ff66        ;
+402F-D7               83 ( 11)         rst CLR
+4030-80               84               .db 80H
+4031-                 85       CAFLA:
+4031-21 1B 40         86 ( 10)         ld HL,KOMFL
+4034-CD D4 01         87 ( 17)         call PRINT
+4037-40               88               .db 40H
+4038-CD 07 00         89 ( 17)         call TI
+403B-17               90               .db 17H
+403C-5F               91 (  4)         ld E,A             ; nr zlecenia
+403D-FE 10            92 (  7)         cp LCTX            ; czy "legalne"
+403F-D2 56 40         93 ( 10)         jp nc,ERFL
+4042-D7               94 ( 11)         rst CLR
+4043-70               95               .db 70H
+4044-21 2C 40         96 ( 10)         ld HL,CAFL
+4047-E5               97 ( 11)         push HL
+4048-0E 02            98 (  7)         ld C,2             ;dla EXPR
+404A-21 65 40         99 ( 10)         ld HL,CTBLX        ;tablica rozejsc
+404D-16 00           100 (  7)         ld D,0             ;w E numer zlecenia
+404F-19              101 ( 11)         add HL,DE
+4050-19              102 ( 11)         add HL,DE
+4051-5E              103 (  7)         ld E,(HL)
+4052-23              104 (  6)         inc HL
+4053-56              105 (  7)         ld D,(HL)
+4054-EB              106 (  4)         ex DE,HL
+4055-E9              107 (  4)         jp (HL)            ;Pseudo CALL
+4056-                108       ERFL:
+4056-D7              109 ( 11)         rst CLR
+4057-80              110               .db 80H
+4058-21 34 00        111 ( 10)         ld HL,KOMERR
+405B-CD D4 01        112 ( 17)         call PRINT
+405E-35              113               .db 35H
+405F-18 D0           114 ( 12)         jr CAFLA
+0034-                115       KOMERR  .eq 0034H          ;juz jest w CA80
+4061-                116       ;********************************************************
+4061-                117       ; Tablica adresÛw poczπtkÛw linii LCD
+4061-                118       ;********************************************************
+4061-                119       NUM_LINII:
+4061-80 C0 94 D4     120         .db L1, L2, L3, L4  ; musi byÊ na jednej stronie!
+4065-                121       ;********************************************************
+4065-                122
+4065-                123       CTBLX:
+4065-90 40           124               .dw Z0             ;Czy wolny sektor
+4067-1A 44           125               .dw Z1             ;Szukaj wolny sektor (jeszcze brak)
+4069-6C 44           126               .dw Z2             ;Kasuj sektor
+406B-84 44           127               .dw Z3             ;Ustaw adres bufora(kasuj bufor)
+406D-E3 41           128               .dw Z4             ;Zapisz RAM do bufora
+406F-62 42           129               .dw Z5             ;Zapisz EOF do bufora
+4071-30 43           130               .dw Z6             ;Czytaj sektor do RAM
+4073-FC 43           131               .dw Z7             ;Zapisz bufor do sektora
+4075-51 44           132               .dw Z8             ;Czytaj z wejscia magn. do bufora (jeszcze brak)
+4077-51 44           133               .dw Z9             ;Weryfikuj we. magn. z buforem (jeszcze brak)
+4079-AF 42           134               .dw ZA             ;Wyslij sektor przez wy. magnet.
+407B-59 44           135               .dw ZB             ;Ustaw 3,5 kHz na wy. magnet.
+407D-02 45           136               .dw ZC             ;Kopiuj dane do EEPROM W U11
+407F-57 45           137               .dw ZD             ;Disable SDP (np. MK28C64) W U11
+4081-36 45           138               .dw ZE             ;Enable SDP (lub np. AT28C64) W U11
+4083-74 45           139               .dw ZF             ;SzukaJ nazw programow
+0010-                140       LCTX    .eq $-CTBLX/2
+4085-                141       CIFL:
+4085-CD 84 01        142 ( 17)         call CIM           ;Str.11 w MIK08
+4088-F5              143 ( 11)         push AF
+4089-FE 10           144 (  7)         cp 10H             ;Kod klaw. "G"
+408B-CA 2C 40        145 ( 10)         jp z,CAFL
+408E-F1              146 ( 10)         pop AF
+408F-C9              147 ( 10)         ret
+4090-                148       ;*********************************************************************
+4090-                149       Z0:       ;Sprawdz czy wolny sektor [0][NR SEKTORA][=]
+4090-                150                 ;Wysw. adres i jego zawartosc
+4090-                151                 ;6FFF FF oznacza pusty, inna wartosc przeciwnie
+4090-0D              152 (  4)         dec C              ;jeden parametr
+4091-CD 13 02        153 ( 17)         call EXPR
+4094-20              154               .db 20H
+4095-D1              155 ( 10)         pop DE
+4096-                156       Z01:
+4096-7B              157 (  4)         ld A,E
+4097-32 FD 5F        158 ( 13)         LD (SECT),A
+409A-21 00 60        159 ( 10)         ld HL,FL
+409D-16 FF           160 (  7)         ld D,EOM
+409F-01 00 10        161 ( 10)         ld BC,BUF_LEN
+40A2-                162       .loop
+40A2-7A              163 (  4)         ld A,D
+40A3-ED A1           164 ( 16)         cpi
+40A5-20 03           165 ( 7+)         jr NZ,.koniec
+40A7-EA A2 40        166 ( 10)         jp PE,.loop
+40AA-                167       .koniec
+40AA-2B              168 (  6)         dec HL
+40AB-                169       .wysadr
+40AB-E7              170 ( 11)         rst LADR
+40AC-43              171               .db 43h
+40AD-7E              172 (  7)         ld A,(HL)
+40AE-DF              173 ( 11)         rst LBYTE
+40AF-20              174               .db 20H
+40B0-CD 79 41        175 ( 17)         CALL LCD_INFO_SECT
+40B3-CF              176 ( 11)         rst TI1
+40B4-D8              177 ( 5+)         ret C
+40B5-28 11           178 ( 7+)         jr Z,.nsec
+40B7-                179       .adrnff
+40B7-FE 10           180 (  7)         cp 10H
+40B9-D0              181 ( 5+)         ret NC
+40BA-4F              182 (  4)         ld C,A
+40BB-D7              183 ( 11)         rst CLR
+40BC-43              184               .db 43H
+40BD-CD E1 01        185 ( 17)         call CO1
+40C0-79              186 (  4)         ld A,C
+40C1-CD F8 01        187 ( 17)         call PARA1
+40C4-5D              188 (  4)         ld E,L           ;W E nowy nr sektora
+40C5-C3 96 40        189 ( 10)         jp Z01           ;sprawdz nowy sektor
+40C8-                190       .nsec                    ;wyswietl nr sektora
+40C8-D7              191 ( 11)         rst CLR
+40C9-43              192               .db 43H
+40CA-7B              193 (  4)         ld A,E
+40CB-DF              194 ( 11)         rst LBYTE
+40CC-23              195               .db 23H
+40CD-CF              196 ( 11)         rst TI1
+40CE-D8              197 ( 5+)         ret C
+40CF-28 DA           198 ( 7+)         jr Z,.wysadr
+40D1-18 E4           199 ( 12)         jr .adrnff
+40D3-                200
+40D3-                201       CHKBUF: ;sprawdz. czy bufor zainicjowany
+40D3-3A FF 5F        202 ( 13)         ld A,(BUFEND+1) ;sprawdz starszy bajt adresu
+40D6-E6 F0           203 (  7)         and 0F0H        ;starsza cyfra
+40D8-FE 50           204 (  7)         cp BUFOR/256         ;powinno byc wyliczone z BUFOR
+40DA-C2 56 40        205 ( 10)         jp NZ,ERFL
+40DD-CD 6C 41        206 ( 17)         CALL LCD_INFO
+40E0-FD 21 D0 5F     207 ( 14)         LD IY,NAME1
+40E4-FD 7E 00        208 ( 19)         LD A,(IY+0)
+40E7-C9              209 ( 10)         ret
+40E8-                210
+40E8-                211       SET_NAME:                 ;SPRAWDè I ZAPISZ NAZW 
+40E8-FD 21 E4 5F     212 ( 14)         LD IY,NAME2
+40EC-CB 78           213 (  8)         BIT 7,B
+40EE-20 04           214 ( 7+)         JR NZ,W_NAME
+40F0-FD 21 D0 5F     215 ( 14)         LD IY,NAME1
+40F4-                216       W_NAME:
+40F4-3E FF           217 (  7)         LD A,EOM
+40F6-FD BE 00        218 ( 19)         CP (IY+0)
+40F9-28 0A           219 ( 7+)         JR Z,NEW_NAME
+40FB-78              220 (  4)         LD A,B
+40FC-FD BE 00        221 ( 19)         CP (IY+0)
+40FF-C2 56 40        222 ( 10)         JP NZ,ERFL
+4102-C3 10 41        223 ( 10)         JP NAME_SEARCH
+4105-                224       NEW_NAME:
+4105-FD 70 00        225 ( 19)         LD (IY+0),B
+4108-FD 36 01 00     226 ( 19)         LD (IY+1),0
+410C-FD 36 02 00     227 ( 19)         LD (IY+2),0
+4110-                228       NAME_SEARCH:
+4110-C5              229 ( 11)         PUSH BC
+4111-D5              230 ( 11)         PUSH DE
+4112-FD E5           231 ( 15)         PUSH IY
+4114-E5              232 ( 11)         PUSH HL
+4115-ED 52           233 ( 15)         SBC HL,DE
+4117-44              234 (  4)         LD B,H
+4118-4D              235 (  4)         LD C,L
+4119-E1              236 ( 10)         POP HL
+411A-E5              237 ( 11)         PUSH HL
+411B-                238       .NS:
+411B-16 00           239 (  7)         LD D,0
+411D-3E AA           240 (  7)         LD A,0AAh
+411F-ED B1           241 (16+)         CPIR
+4121-E2 46 41        242 ( 10)         JP PO,NO_NAME
+4124-                243       .AA:
+4124-14              244 (  4)         INC D
+4125-ED A1           245 ( 16)         CPI
+4127-E2 46 41        246 ( 10)         JP PO,NO_NAME
+412A-28 F8           247 ( 7+)         JR Z,.AA
+412C-7A              248 (  4)         LD A,D
+412D-D6 04           249 (  7)         SUB 4
+412F-38 EA           250 ( 7+)         JR C,.NS
+4131-2B              251 (  6)         DEC HL
+4132-11 03 00        252 ( 10)         LD DE,3
+4135-FD 19           253 ( 15)         ADD IY,DE
+4137-FD E5           254 ( 15)         PUSH IY
+4139-D1              255 ( 10)         POP DE
+413A-                256       .NAME
+413A-06 10           257 (  7)         LD B,10h
+413C-7E              258 (  7)         LD A,(HL)
+413D-FE FF           259 (  7)         CP EOM
+413F-28 05           260 ( 7+)         JR Z,NO_NAME
+4141-12              261 (  7)         LD (DE),A
+4142-23              262 (  6)         INC HL
+4143-13              263 (  6)         INC DE
+4144-10 F4           264 ( 8+)         DJNZ .NAME
+4146-                265       NO_NAME:
+4146-CD 6C 41        266 ( 17)         CALL LCD_INFO
+4149-E1              267 ( 10)         POP HL
+414A-FD E1           268 ( 14)         POP IY
+414C-D1              269 ( 10)         POP DE
+414D-C1              270 ( 10)         POP BC
+414E-C9              271 ( 10)         RET
+414F-                272
+414F-                273       PRINT_L0_C:                 ; WYåWIETL W PIERWSZEJ LINII Z KASOWANIEM LCD
+414F-CD 52 4E        274 ( 17)         CALL LCD_CLR
+4152-                275       PRINT_L0:                   ; WYåWIETL W PIERWSZEJ LINII
+4152-01 00 00        276 ( 10)         LD BC,0
+4155-                277       PRINT_LX:                   ; WYåWIETL W DOWOLNYM MIEJSCU
+4155-CD 87 4E        278 ( 17)         CALL LCD_SET_CURSOR ; W BC POZYCJA KURSORA
+4158-CD 2A 4E        279 ( 17)         CALL LCD_PRINT
+415B-C9              280 ( 10)         RET
+415C-                281
+415C-                282       PRINT_3B_LX:                ; WYåWIETL 3 BAJTY W DOWOLNYM MIEJSCU
+415C-CD 87 4E        283 ( 17)         CALL LCD_SET_CURSOR ; W BC POZYCJA KURSORA
+415F-                284       PRINT_3B:                   ; WYåWIETL 3 BAJTY OD POZYCJ KURSORA
+415F-06 03           285 (  7)         LD B,3
+4161-                286       .P3B:
+4161-CD B9 4E        287 ( 17)         CALL SPACJA
+4164-7E              288 (  7)         LD A,(HL)
+4165-CD 5D 4E        289 ( 17)         CALL LCD_BYTE
+4168-23              290 (  6)         INC HL
+4169-10 F6           291 ( 8+)         DJNZ .P3B
+416B-C9              292 ( 10)         RET
+416C-                293
+416C-                294       LCD_INFO:
+416C-E5              295 ( 11)         PUSH HL
+416D-C5              296 ( 11)         PUSH BC
+416E-21 C7 41        297 ( 10)         LD HL,T_BUFOR
+4171-CD 4F 41        298 ( 17)         CALL PRINT_L0_C
+4174-21 D0 5F        299 ( 10)         LD HL,NAME1
+4177-18 0B           300 ( 12)         JR LCD_INFO1
+4179-                301       LCD_INFO_SECT:
+4179-E5              302 ( 11)         PUSH HL
+417A-C5              303 ( 11)         PUSH BC
+417B-21 D1 41        304 ( 10)         LD HL,T_SECT
+417E-CD 4F 41        305 ( 17)         CALL PRINT_L0_C
+4181-21 D0 6F        306 ( 10)         LD HL,NAME1-BUFOR+FL  ; W SEKTORZE FLASH
+4184-                307       LCD_INFO1:
+4184-3A FD 5F        308 ( 13)         LD A,(SECT)
+4187-CD 5D 4E        309 ( 17)         CALL LCD_BYTE
+418A-E5              310 ( 11)         PUSH HL
+418B-CD 5F 41        311 ( 17)         CALL PRINT_3B
+418E-01 00 01        312 ( 10)         LD BC,100h            ; ROW 1, COL 0
+4191-CD 55 41        313 ( 17)         CALL PRINT_LX
+4194-01 00 02        314 ( 10)         LD BC,200h            ; ROW 2, COL 0
+4197-CD 87 4E        315 ( 17)         CALL LCD_SET_CURSOR
+419A-2E FE           316 (  7)         LD L,BUFEND-BUFOR
+419C-4E              317 (  7)         LD C,(HL)
+419D-23              318 (  6)         INC HL
+419E-46              319 (  7)         LD B,(HL)
+419F-78              320 (  4)         LD A,B
+41A0-FE FF           321 (  7)         CP EOM
+41A2-20 03           322 ( 7+)         JR NZ,.N_EMPTY
+41A4-01 00 50        323 ( 10)         LD BC,BUFOR
+41A7-                324       .N_EMPTY:
+41A7-21 D0 5F        325 ( 10)         LD HL,NAME1
+41AA-B7              326 (  4)         OR A                  ; CF = 0
+41AB-ED 42           327 ( 15)         SBC HL,BC
+41AD-CD 6B 4E        328 ( 17)         CALL LCD_WORD
+41B0-21 DB 41        329 ( 10)         LD HL,T_FREE
+41B3-CD 2A 4E        330 ( 17)         CALL LCD_PRINT
+41B6-E1              331 ( 10)         POP HL
+41B7-01 14 00        332 ( 10)         LD BC,NAME2-NAME1
+41BA-09              333 ( 11)         ADD HL,BC
+41BB-CD 5F 41        334 ( 17)         CALL PRINT_3B
+41BE-01 00 03        335 ( 10)         LD BC,300h
+41C1-CD 55 41        336 ( 17)         CALL PRINT_LX
+41C4-C1              337 ( 10)         POP BC
+41C5-E1              338 ( 10)         POP HL
+41C6-C9              339 ( 10)         RET
+41C7-                340
+41C7-                341       T_BUFOR:
+41C7-42 55 46 4F 
+     52 3A 20 20 
+     20              342               .db "BUFOR:   "
+41D0-FF              343               .db EOM
+41D1-                344       T_SECT:
+41D1-53 45 4B 54 
+     4F 52 3A 20 
+     20              345               .db "SEKTOR:  "
+41DA-FF              346               .db EOM
+41DB-                347       T_FREE:
+41DB-20 46 52 45 
+     45 20 20        348               .db " FREE  "
+41E2-FF              349               .db EOM
+41E3-                350       ;*********************************************************************
+41E3-                351       Z4:   ;Zapisz RAM do bufora
+41E3-                352             ;[4][ADR1[.][ADR2][.][NAZWA][=]
+41E3-0C              353 (  4)         inc C            ; 3 parametry
+41E4-CD 13 02        354 ( 17)         call EXPR
+41E7-40              355               .db 40H
+41E8-C1              356 ( 10)         pop BC
+41E9-41              357 (  4)         ld B,C           ;B - nazwa
+41EA-D1              358 ( 10)         pop DE           ;ADR2
+41EB-E1              359 ( 10)         pop HL           ;ADR1
+41EC-CD D3 40        360 ( 17)         call CHKBUF
+41EF-CD E8 40        361 ( 17)         CALL SET_NAME
+41F2-C5              362 ( 11)         push BC
+41F3-E5              363 ( 11) .wr0    push HL
+41F4-3A B1 FF        364 ( 13)         ld A,(DLUG)      ;dlug. bloku danych
+41F7-4F              365 (  4)         ld C,A
+41F8-06 00           366 (  7)         ld B,0
+41FA-04              367 (  4) .wr1    inc B
+41FB-0D              368 (  4)         dec C
+41FC-28 08           369 ( 7+)         jr Z,.wr2
+41FE-CD 3B 02        370 ( 17)         call HILO
+4201-30 F7           371 ( 7+)         jr NC,.wr1
+4203-FD 34 01        372 ( 23)         INC (IY+1)
+4206-                373               ;B - wyliczona dlugosc bloku danych
+4206-D5              374 ( 11) .wr2    push DE
+4207-21 FD E2        375 ( 10)         ld HL,MARK
+420A-FD 34 01        376 ( 23)         INC (IY+1)
+420D-CD 8E 42        377 ( 17)         call BADR
+4210-D1              378 ( 10)         pop DE
+4211-E1              379 ( 10)         pop HL
+4212-F1              380 ( 10)         pop AF
+4213-F5              381 ( 11)         push AF
+4214-D5              382 ( 11)         push DE
+4215-5F              383 (  4)         ld E,A               ;Nazwa
+4216-16 00           384 (  7)         ld D,0               ;Zerow. sumy kontrolnej
+4218-CD 93 42        385 ( 17)         call BBYT            ;zapisanie nazwy
+421B-7B              386 (  4)         ld A,E
+421C-DF              387 ( 11)         rst LBYTE
+421D-25              388               .db 25H
+421E-78              389 (  4)         ld A,B               ;dlug. bloku
+421F-CD 93 42        390 ( 17)         call BBYT
+4222-CD 8E 42        391 ( 17)         call BADR
+4225-E7              392 ( 11)         rst LADR
+4226-40              393               .db 40H
+4227-AF              394 (  4)         xor A
+4228-92              395 (  4)         sub D                ;-suma kontrolna naglowka
+4229-CD 93 42        396 ( 17)         call BBYT
+422C-16 00           397 (  7)         ld D,0
+422E-                398               ;zapisanie bloku danych do bufora
+422E-7E              399 (  7) .wr3    ld A,(HL)
+422F-CD 93 42        400 ( 17)         call BBYT
+4232-23              401 (  6)         inc HL
+4233-10 F9           402 ( 8+)         djnz .wr3
+4235-                403               ;SUMD - suma kontrolna bloku danych
+4235-AF              404 (  4)         xor A
+4236-92              405 (  4)         sub D                 ;-SUMD
+4237-CD 93 42        406 ( 17)         call BBYT
+423A-D1              407 ( 10)         pop DE
+423B-2B              408 (  6)         dec HL
+423C-CD 3B 02        409 ( 17)         call HILO
+423F-30 B2           410 ( 7+)         jr NC,.wr0
+4241-                411               ;DE<HL - koniec zapisu
+4241-C1              412 ( 10)         pop BC
+4242-CD 6C 41        413 ( 17)         CALL LCD_INFO
+4245-C9              414 ( 10)         ret
+4246-                415
+4246-                416       CHK_NAME:
+4246-FD 21 E4 5F     417 ( 14)         LD IY,NAME2
+424A-CB 78           418 (  8)         BIT 7,B
+424C-20 04           419 ( 7+)         JR NZ,C_NAME
+424E-FD 21 D0 5F     420 ( 14)         LD IY,NAME1
+4252-                421       C_NAME:
+4252-3E FF           422 (  7)         LD A,EOM
+4254-FD BE 00        423 ( 19)         CP (IY+0)
+4257-CA 56 40        424 ( 10)         JP Z,ERFL
+425A-78              425 (  4)         LD A,B
+425B-FD BE 00        426 ( 19)         CP (IY+0)
+425E-C2 56 40        427 ( 10)         JP NZ,ERFL
+4261-C9              428 ( 10)         RET
+4262-                429
+4262-                430       ;*********************************************************************
+4262-                431       Z5:     ;Zapisz EOF do bufora
+4262-                432               ;[5][ADR.WEJ.][.][NAZWA][=]
+4262-CD 13 02        433 ( 17)         call EXPR
+4265-40              434               .db 40H
+4266-C1              435 ( 10)         pop BC
+4267-41              436 (  4)         ld B,C                  ;Nazwa
+4268-E1              437 ( 10)         pop HL                  ;Adres wejscia
+4269-CD D3 40        438 ( 17) BEOF:   call CHKBUF
+426C-CD 46 42        439 ( 17)         CALL CHK_NAME           ;MOØLIWY ZAPIS TYLKO GDY NAZWA JEST ZGODNA
+426F-FD 34 02        440 ( 23)         INC (IY+2)
+4272-E5              441 ( 11)         push HL
+4273-CD 6C 41        442 ( 17)         CALL LCD_INFO
+4276-21 FD E2        443 ( 10)         ld HL,MARK
+4279-CD 8E 42        444 ( 17)         call BADR
+427C-78              445 (  4)         ld A,B
+427D-16 00           446 (  7)         ld D,0
+427F-CD 93 42        447 ( 17)         call BBYT
+4282-AF              448 (  4)         xor A
+4283-CD 93 42        449 ( 17)         call BBYT
+4286-E1              450 ( 10)         pop HL
+4287-CD 8E 42        451 ( 17)         call BADR
+428A-AF              452 (  4)         xor A
+428B-92              453 (  4)         sub D
+428C-18 05           454 ( 12)         jr BBYT
+428E-                455       BADR:   ;Zapisz HL w buforze
+428E-7D              456 (  4)         ld A,L
+428F-CD 93 42        457 ( 17)         call BBYT
+4292-7C              458 (  4)         ld A,H
+4293-                459       BBYT:   ;Zapisz bajt w buforze
+4293-4F              460 (  4)         ld C,A
+4294-82              461 (  4)         add A,D                   ;suma modulo 256
+4295-57              462 (  4)         ld D,A
+4296-79              463 (  4)         ld A,C
+4297-D5              464 ( 11) BBYTE:  push DE
+4298-E5              465 ( 11)         push HL
+4299-11 FA 5F        466 ( 10)         ld DE,BUFEND-4
+429C-2A FE 5F        467 ( 16)         ld HL,(BUFEND)            ;wskaznik bufora
+429F-77              468 (  7)         ld (HL),A                 ;zapis do bufora
+42A0-CD 3B 02        469 ( 17)         call HILO
+42A3-DA 56 40        470 ( 10)         jp C,ERFL                 ;za duzo danych
+42A6-22 FE 5F        471 ( 20)         ld (BUFEND),HL
+42A9-E1              472 ( 10)         pop HL
+42AA-D1              473 ( 10)         pop DE
+42AB-CD F8 44        474 ( 17)         call DELAY
+42AE-C9              475 ( 10)         ret
+42AF-                476       ;*********************************************************************
+42AF-                477       ZA:     ;Wyslij sektor przez wy. magnet.
+42AF-                478               ;[A][NR SEKTORA][=]
+42AF-0D              479 (  4)         dec C              ;jeden parametr
+42B0-CD 13 02        480 ( 17)         call EXPR
+42B3-20              481               .db 20H
+42B4-C1              482 ( 10)         pop BC
+42B5-41              483 (  4)         ld B,C
+42B6-79              484 (  4)         ld A,C             ; nr sektora
+42B7-                485       FLMAG:  ;wej: A - numer sektora
+42B7-                486               ;zawartosc sektora zostanie wyslana tak, jak jest.
+42B7-                487               ;jezeli dane poprawne, na wysw. nazwa i adres bloku
+42B7-                488               ;nalezy wysylac tylko zapisane sektory.
+42B7-32 FD 5F        489 ( 13)         LD (SECT),A
+42BA-CD 25 43        490 ( 17)         call SYNCH
+42BD-DD 21 00 60     491 ( 14)         ld IX,FL
+42C1-21 FD E2        492 ( 10) FLM1:   ld HL,MARK
+42C4-CD 15 43        493 ( 17) FLM0:   call RFLBYT
+42C7-4F              494 (  4)         ld C,A
+42C8-CD AB 06        495 ( 17)         call PBYTE  ;monitor CA80 - wyslanie bajtu na magnetofon
+42CB-79              496 (  4)         ld A,c      ;PBYTE zmienia AF
+42CC-BD              497 (  4) FLX:    cp L
+42CD-20 F5           498 ( 7+)         jr NZ,FLM0
+42CF-CD 15 43        499 ( 17)         call RFLBYT
+42D2-4F              500 (  4)         ld C,A
+42D3-CD AB 06        501 ( 17)         call PBYTE  ;monitor CA80 - wyslanie bajtu na magnetofon
+42D6-79              502 (  4)         ld A,c      ;PBYTE zmienia AF
+42D7-BC              503 (  4)         cp H
+42D8-20 F2           504 ( 7+)         jr NZ,FLX
+42DA-                505               ;znaleziono MARK
+42DA-CD 15 43        506 ( 17)         call RFLBYT
+42DD-4F              507 (  4)         ld C,A      ;NAZWA
+42DE-CD AB 06        508 ( 17)         call PBYTE  ;monitor CA80 - wyslanie bajtu na magnetofon
+42E1-79              509 (  4)         ld A,c      ;PBYTE zmienia AF
+42E2-DF              510 ( 11)         rst LBYTE   ;wyswietlenie nazwy
+42E3-25              511               .db 25H
+42E4-CD 15 43        512 ( 17)         call RFLBYT ;DLUGOSC
+42E7-47              513 (  4)         ld B,A
+42E8-CD AB 06        514 ( 17)         call PBYTE  ;monitor CA80 - wyslanie bajtu na magnetofon
+42EB-CD 15 43        515 ( 17)         call RFLBYT
+42EE-6F              516 (  4)         ld L,A      ;mlodszy bajt adresu
+42EF-CD AB 06        517 ( 17)         call PBYTE  ;monitor CA80 - wyslanie bajtu na magnetofon
+42F2-CD 15 43        518 ( 17)         call RFLBYT
+42F5-67              519 (  4)         ld H,A      ;starszy bajt adresu
+42F6-CD AB 06        520 ( 17)         call PBYTE  ;monitor CA80 - wyslanie bajtu na magnetofon
+42F9-E7              521 ( 11)         rst LADR    ;wyswietlenie adresu
+42FA-40              522               .db 40H
+42FB-CD 15 43        523 ( 17)         call RFLBYT ;suma
+42FE-CD AB 06        524 ( 17)         call PBYTE  ;monitor CA80 - wyslanie bajtu na magnetofon
+4301-78              525 (  4)         ld A,B
+4302-B7              526 (  4)         or A
+4303-28 BC           527 ( 7+)         jr Z,FLM1
+4305-                528               ;blok danych
+4305-CD 15 43        529 ( 17) FLM2:   call RFLBYT
+4308-CD AB 06        530 ( 17)         call PBYTE  ;monitor CA80 - wyslanie bajtu na magnetofon
+430B-10 F8           531 ( 8+)         djnz FLM2
+430D-CD 15 43        532 ( 17)         call RFLBYT ;suma
+4310-CD AB 06        533 ( 17)         call PBYTE  ;monitor CA80 - wyslanie bajtu na magnetofon
+4313-18 AC           534 ( 12)         jr  FLM1    ;wyslij nastepny sektor
+4315-                535
+4315-                536
+4315-                537       RFLBYT: ;odczyt bajtu z flash bez sumy kontrolnej
+4315-DD 7E 00        538 ( 19)         ld A,(IX+0)
+4318-DD 23           539 ( 10)         inc IX
+431A-4F              540 (  4)         ld C,A
+431B-3E F0           541 (  7)         ld A,0F0H             ;sprawdzamy czy nadal adres sektora
+431D-DD A4           542               .db 0DDH,0A4H         ;and IXH
+431F-FE 60           543 (  7)         cp 60H
+4321-C2 2C 40        544 ( 10)         jp NZ,CAFL
+4324-C9              545 ( 10)         ret
+4325-                546
+4325-                547
+4325-C5              548 ( 11) SYNCH:  push BC
+4326-06 08           549 (  7)         ld B,8  ;liczba bajtow synchronizacji (w CA80 bylo 32)
+4328-AF              550 (  4) .pbx    xor A
+4329-CD AB 06        551 ( 17)         call PBYTE
+432C-10 FA           552 ( 8+)         djnz .pbx
+432E-C1              553 ( 10)         pop BC
+432F-C9              554 ( 10)         ret
+4330-                555       ;*********************************************************************
+4330-                556       Z6:     ;Czytaj sektor do RAM
+4330-                557               ;[6][NR SEKTORA][=]
+4330-0D              558 (  4)         dec C              ;jeden parametr
+4331-CD 13 02        559 ( 17)         call EXPR
+4334-20              560               .db 20H
+4335-C1              561 ( 10)         pop BC
+4336-41              562 (  4)         ld B,C
+4337-                563       FMAG:   ;dziala jak OMAG MIK08
+4337-CD 25 43        564 ( 17)         call SYNCH
+433A-78              565 (  4)         ld A,B             ; nr sektora
+433B-32 FD 5F        566 ( 13)         LD (SECT),A
+433E-C5              567 ( 11)         push BC
+433F-CD 79 41        568 ( 17)         CALL LCD_INFO_SECT
+4342-DD 21 00 60     569 ( 14)         ld IX,FL
+4346-21 FD E2        570 ( 10) RED1:   ld HL,MARK
+4349-CD B9 43        571 ( 17) RED0:   call RFBYT
+434C-BD              572 (  4) REX:    cp L
+434D-C2 49 43        573 ( 10)         jp NZ,RED0
+4350-CD B9 43        574 ( 17)         call RFBYT
+4353-BC              575 (  4)         cp H
+4354-C2 4C 43        576 ( 10)         jp NZ,REX
+4357-                577               ;znaleziono MARK
+4357-16 00           578 (  7)         ld D,0
+4359-CD B9 43        579 ( 17)         call RFBYT
+435C-5F              580 (  4)         ld E,A              ;E - nazwa pliku
+435D-DF              581 ( 11)         rst LBYTE
+435E-25              582               .db 25H
+435F-CD B9 43        583 ( 17)         call RFBYT
+4362-47              584 (  4)         ld B,A              ;B - dlugosc bloku
+4363-CD B9 43        585 ( 17)         call RFBYT
+4366-6F              586 (  4)         ld L,A              ;L - mlodszy bajt adresu
+4367-CD B9 43        587 ( 17)         call RFBYT
+436A-67              588 (  4)         ld H,A              ;H - starszy bajt
+436B-E7              589 ( 11)         rst LADR
+436C-40              590               .db 40H
+436D-CD B9 43        591 ( 17)         call RFBYT
+4370-20 2E           592 ( 7+)         jr NZ,REOF          ;CY = 0 - blad SUMN
+4372-F1              593 ( 10)         pop AF
+4373-F5              594 ( 11)         push AF             ;A - nazwa deklarowana
+4374-BB              595 (  4)         cp E
+4375-20 CF           596 ( 7+)         jr NZ,RED1          ;nazwy rozne
+4377-                597               ;sprawdzenie czy EOF
+4377-78              598 (  4)         ld A,B
+4378-B7              599 (  4)         or A                  ;czy dlug. = 0
+4379-28 25           600 ( 7+)         jr Z,REOF
+437B-DD 7E 00        601 ( 19)         ld A,(IX+0)
+437E-CD B1 43        602 ( 17)         call SOUND            ;monitor CA80 - wyslanie bajtu na magnetofon
+4381-3E 48           603 (  7)         ld A,48H              ;wyswietl. symbolu odczytywania "="
+4383-32 FB FF        604 ( 13)         ld (0FFFBH),A         ;BWYS+4
+4386-                605       RED2:                         ;rekord z blokiem danych
+4386-CD B9 43        606 ( 17)         call RFBYT
+4389-77              607 (  7)         ld (HL),A
+438A-23              608 (  6)         inc HL
+438B-10 F9           609 ( 8+)         djnz RED2
+438D-CD B9 43        610 ( 17)         call RFBYT
+4390-DD 7E 01        611 ( 19)         ld A,(IX+1)
+4393-CD B1 43        612 ( 17)         call SOUND            ;monitor CA80 - wyslanie bajtu na magnetofon
+4396-3E 00           613 (  7)         ld A,0
+4398-32 FB FF        614 ( 13)         ld (0FFFBH),A         ;BWYS+4
+439B-37              615 (  4)         scf                   ;CY = 1 - blad SUMD
+439C-20 02           616 ( 7+)         jr NZ,REOF
+439E-18 A6           617 ( 12)         jr RED1               ;czytaj nastepny rekord
+43A0-                618       REOF:
+43A0-C1              619 ( 10)         pop BC
+43A1-C2 56 40        620 ( 10)         jp NZ,ERFL            ;nie ma jeszcze obs≥ugi bledu
+43A4-3A B3 FF        621 ( 13)         ld A,(GSTAT)          ;czy program uzytkownika
+43A7-B7              622 (  4)         or A
+43A8-20 03           623 ( 7+)         jr NZ,.monjes
+43AA-D7              624 ( 11)         rst CLR
+43AB-80              625               .db 80H
+43AC-E9              626 (  4)         jp (HL)               ;skok do programu uzytkownika
+43AD-                627       .monjes
+43AD-22 A9 FF        628 ( 20)         ld (0FFA9H),HL        ;adr PC uzytkownika (PLOC-1)
+43B0-C9              629 ( 10)         ret
+43B1-                630       SOUND:
+43B1-CD AB 06        631 ( 17)         call PBYTE            ;monitor CA80 - wyslanie bajtu na magnetofon
+43B4-3E 08           632 (  7)         ld A,8
+43B6-D3 F3           633 ( 11)         out (SYS8255+CTRL),A  ; cisza
+43B8-C9              634 ( 10)         ret
+43B9-                635       RFBYT:  ;odczyt bajtu z flash
+43B9-DD 7E 00        636 ( 19)         ld A,(IX+0)
+43BC-DD 23           637 ( 10)         inc IX
+43BE-4F              638 (  4)         ld C,A
+43BF-                639               ;push HL;push IX;pop HL
+43BF-3E F0           640 (  7)         ld A,0F0H             ;sprawdzamy czy nadal adres sektora
+43C1-DD A4           641               .db 0DDH,0A4H         ;and IXH zamiast and H
+43C3-FE 60           642 (  7)         cp 60H
+43C5-C2 56 40        643 ( 10)         jp NZ,ERFL
+43C8-                644               ;pop HL
+43C8-79              645 (  4)         ld A,C
+43C9-82              646 (  4)         add A,D               ;SUMA KONTROLNA
+43CA-57              647 (  4)         ld D,A
+43CB-B7              648 (  4)         or A
+43CC-79              649 (  4)         ld A,C
+43CD-                650               ;call DELAY
+43CD-C9              651 ( 10)         ret
+43CE-                652
+43CE-6D 00 79 50 
+     77 6D 79 FF     653       KOMSEC: .db 6DH,0,79H,50H,77H,6DH,79H,EOM ;s_erase
+43D6-                654
+43D6-                655       SPRSEC: ;sprawdzenie sektora
+43D6-21 00 60        656 ( 10)         ld HL,FL
+43D9-3E FF           657 (  7)         ld A,EOM
+43DB-01 00 10        658 ( 10)         ld BC,BUF_LEN
+43DE-                659       .loop
+43DE-ED A1           660 ( 16)         cpi
+43E0-20 03           661 ( 7+)         jr NZ,.koniec
+43E2-EA DE 43        662 ( 10)         jp PE,.loop
+43E5-                663       .koniec
+43E5-78              664 (  4)         ld A,B
+43E6-B1              665 (  4)         or C
+43E7-C8              666 ( 5+)         ret Z
+43E8-21 CE 43        667 ( 10)         ld HL,KOMSEC
+43EB-CD D4 01        668 ( 17)         call PRINT
+43EE-50              669               .db 80
+43EF-CD C6 FF        670 ( 17)         call CI
+43F2-C3 56 40        671 ( 10)         jp ERFL
+43F5-                672
+43F5-54 50 00 6D 
+     79 39 FF        673       KOMNRS: .db 54H,50H,0,6DH,79H,39H,EOM ;nr_sec
+43FC-                674       ;*********************************************************************
+43FC-                675       Z7:     ;Zapisz bufor do sektora
+43FC-                676               ;[7][=]
+43FC-CD D3 40        677 ( 17)         call CHKBUF
+43FF-32 FD 5F        678 ( 13)         LD (SECT),A
+4402-CD B9 44        679 ( 17)         call SST_S_ERASE
+4405-21 00 50        680 ( 10)         ld HL,BUFOR
+4408-11 00 60        681 ( 10)         ld DE,FL
+440B-01 00 10        682 ( 10)         ld BC,BUF_LEN
+440E-CD DE 44        683 ( 17) .next   call SST_B_KEY
+4411-ED A0           684 ( 16)         ldi
+4413-EA 0E 44        685 ( 10)         jp PE,.next
+4416-CD 79 41        686 ( 17)         CALL LCD_INFO_SECT
+4419-C9              687 ( 10)         ret
+441A-                688       ;*********************************************************************
+441A-                689       Z1:     ;Szukaj wolny sektor
+441A-                690               ;[1][NR SEKTORA][=]  SZUKAJ OD SEKTORA O PODANYM NR
+441A-                691               ;[1][=]              SZUKAJ OD SEKTORA NR 0
+441A-CD 07 00        692 ( 17)         CALL TI
+441D-20              693               .db 20h
+441E-38 09           694 ( 7+)         JR C,.SZUK
+4420-CA 56 40        695 ( 10)         JP Z,ERFL
+4423-CD F8 01        696 ( 17)         CALL PARA1
+4426-7D              697 (  4)         LD A,L
+4427-18 09           698 ( 12)         JR .SZUK1
+4429-                699       .SZUK:
+4429-AF              700 (  4)         XOR A
+442A-18 06           701 ( 12)         JR .SZUK1
+442C-                702       .SZUK2:
+442C-3C              703 (  4)         INC A
+442D-E6 7F           704 (  7)         AND 7Fh
+442F-B7              705 (  4)         OR A
+4430-28 1E           706 ( 7+)         JR Z,BRAK
+4432-                707       .SZUK1:
+4432-6F              708 (  4)         LD L,A
+4433-32 FD 5F        709 ( 13)         LD (SECT),A
+4436-26 FD           710 (  7)         LD H,0FDh
+4438-3A 00 60        711 ( 13)         LD A,(FL)
+443B-BC              712 (  4)         CP H
+443C-7D              713 (  4)         LD A,L
+443D-28 ED           714 ( 7+)         JR Z,.SZUK2
+443F-CD 79 41        715 ( 17)         CALL LCD_INFO_SECT
+4442-7D              716 (  4)         LD A,L
+4443-CD 18 00        717 ( 17)         CALL LBYTE
+4446-14              718               .db 20
+4447-CF              719 ( 11)         RST TI1
+4448-D2 2C 40        720 ( 10)         JP NC,CAFL
+444B-3A FD 5F        721 ( 13)         LD A,(SECT)
+444E-18 DC           722 ( 12)         JR .SZUK2
+4450-                723       BRAK:
+4450-C9              724 ( 10)         RET
+4451-                725
+4451-                726
+4451-                727       ;*********************************************************************
+4451-                728       Z8:
+4451-                729       ;*********************************************************************
+4451-                730       Z9:
+4451-C9              731 ( 10)         ret
+4452-                732
+4452-73 39 66 00 
+     5C 54 FF        733       KOMZB:  .db 73H,39H,66H,0,5CH,54H,EOM   ;pc4_on
+4459-                734       ;*********************************************************************
+4459-                735       ZB:     ;Ustaw 3,5 kHz na wy. magnet.
+4459-3E 09           736 (  7)         ld A,9
+445B-D3 F3           737 ( 11)         out (SYS8255+CTRL),A
+445D-21 52 44        738 ( 10)         ld HL,KOMZB
+4460-CD D4 01        739 ( 17)         call PRINT
+4463-60              740               .db 60H
+4464-CD C6 FF        741 ( 17)         call CI
+4467-3E 08           742 (  7)         ld A,8
+4469-D3 F3           743 ( 11)         out (SYS8255+CTRL),A
+446B-C9              744 ( 10)         ret
+446C-                745       ;*********************************************************************
+446C-                746       Z2:     ; Kasuj sektor [2][NR SEKTORA][=]
+446C-                747               ; Jeøeli wpiszemy FF -
+446C-                748               ; ZOSTAN• SKASOWANE WSZYSTKIE NIEZAPISANE SEKTORY
+446C-0D              749 (  4)         dec C              ;jeden parametr
+446D-CD 13 02        750 ( 17)         call EXPR
+4470-20              751               .db 20H
+4471-D1              752 ( 10)         pop DE
+4472-7B              753 (  4)         ld A,E             ; nr sektora
+4473-FE FF           754 (  7)         CP EOM
+4475-20 03           755 ( 7+)         JR NZ,.SE
+4477-CD 18 46        756 ( 17)         CALL FLASH_FORMAT
+447A-                757       .SE:
+447A-CD B9 44        758 ( 17)         call SST_S_ERASE
+447D-C9              759 ( 10)         ret
+447E-                760
+447E-                761       KOMBUFER:
+447E-7C 3E 71 3F 
+     50 FF           762               .db 7CH,3EH,71H,3FH,50H,EOM ;"bUFOr"
+4484-                763       ;*********************************************************************
+4484-                764       Z3:     ; INICJUJ bufor (wyúwietl bufor)
+4484-                765               ; [3][NR SEKTORA][=]  PRZEPISZ SEKTOR O PODANYM NR DO BUFORA
+4484-                766               ; UMOØLIWIA EDYCJ  SEKTORA. NP. DOPISANIE NAZW
+4484-                767               ; LUB WGRANIE DRUGIEGO PROGRAMU, JEØELI BY£ JEDEN
+4484-                768               ; [3][=]              WYåWIETL ZAWARTOå∆ BUFORA BEZ ZMIAN
+4484-21 7E 44        769 ( 10)         ld HL,KOMBUFER
+4487-C5              770 ( 11)         PUSH BC
+4488-CD D4 01        771 ( 17)         call PRINT
+448B-52              772               .db 52H
+448C-CD 07 00        773 ( 17)         CALL TI
+448F-20              774               .db 20h
+4490-38 23           775 ( 7+)         JR C,.INFO
+4492-CA 56 40        776 ( 10)         JP Z,ERFL
+4495-CD F8 01        777 ( 17)         CALL PARA1
+4498-7D              778 (  4)         LD A,L
+4499-32 FD 5F        779 ( 13)         LD (SECT),A
+449C-21 00 60        780 ( 10)         LD HL,FL
+449F-11 00 50        781 ( 10)         ld DE,BUFOR
+44A2-01 00 10        782 ( 10)         LD BC,BUF_LEN
+44A5-3A FD 6F        783 ( 13)         LD A,(SECT-BUFOR+FL)
+44A8-FE FF           784 (  7)         CP EOM
+44AA-20 07           785 ( 7+)         JR NZ,.ZAP
+44AC-01 FD 0F        786 ( 10)         LD BC,BUF_LEN-3
+44AF-ED 53 FE 5F     787 ( 20)         LD (BUFEND),DE
+44B3-                788       .ZAP:
+44B3-ED B0           789 (16+)         LDIR
+44B5-                790       .INFO
+44B5-CD 6C 41        791 ( 17)         CALL LCD_INFO
+44B8-C9              792 ( 10)         RET
+44B9-                793
+44B9-                794       SST_S_ERASE:
+44B9-E5              795 ( 11)         push HL            ; kasowanie sektora (4 kB)
+44BA-D5              796 ( 11)         push DE
+44BB-C5              797 ( 11)         push BC
+44BC-F5              798 ( 11)         push AF
+44BD-32 FD 5F        799 ( 13)         LD (SECT),A        ; nr sektora w A
+44C0-3E 55           800 (  7)         ld A,K5
+44C2-21 55 75        801 ( 10)         ld HL,A5           ; adres
+44C5-36 AA           802 ( 10)         ld (HL),KA         ; klucz
+44C7-11 AA 7A        803 ( 10)         ld DE,AA           ; adres
+44CA-12              804 (  7)         ld (DE),A          ; klucz
+44CB-36 80           805 ( 10)         ld (HL),080H       ; klucz
+44CD-36 AA           806 ( 10)         ld (HL),KA         ; klucz
+44CF-12              807 (  7)         ld (DE),A          ; klucz
+44D0-26 60           808 (  7)         ld H,60H           ; dowolny - A18..A12 w LS373
+44D2-36 30           809 ( 10)         ld (HL),30H        ; klucz
+44D4-06 10           810 (  7)         ld B,10H           ; wait 28..30 ms
+44D6-                811       .loop
+44D6-76              812 (  4)         halt               ; 2 ms
+44D7-10 FD           813 ( 8+)         djnz .loop         ; Tse MAX 25 ms
+44D9-F1              814 ( 10)         pop AF
+44DA-C1              815 ( 10)         pop BC
+44DB-D1              816 ( 10)         pop DE
+44DC-E1              817 ( 10)         pop HL
+44DD-C9              818 ( 10)         ret
+44DE-                819
+44DE-                820       SST_B_KEY:                 ; odblokowanie flash (SST39SF040)
+44DE-E5              821 ( 11)         push HL            ; nie stosujemy pollingu
+44DF-D5              822 ( 11)         push DE            ; ani innych sztuczek - mierzymy czas
+44E0-F5              823 ( 11)         push AF            ; 4 * 11 cykli
+44E1-C5              824 ( 11)         push BC            ; zapis do Flash Tbp MAX 20 us
+44E2-06 09           825 (  7)         ld b,9H            ; wait 170 * 0.125us (8 MHz > 20 us)
+44E4-                826       .loop                      ; czekamy na koniec zapisu poprzedniego bajtu
+44E4-10 FE           827 ( 8+)         djnz .loop         ; 9*13 cykli
+44E6-C1              828 ( 10)         pop BC             ; 10
+44E7-3E 55           829 (  7)         ld A,K5            ; 7 cykli
+44E9-21 55 75        830 ( 10)         ld HL,A5           ; adres 10 cykli
+44EC-36 AA           831 ( 10)         ld (HL),KA         ; klucz
+44EE-11 AA 7A        832 ( 10)         ld DE,AA           ; adres
+44F1-12              833 (  7)         ld (DE),A          ; klucz
+44F2-F1              834 ( 10)         pop AF             ;
+44F3-D1              835 ( 10)         pop DE             ;
+44F4-36 A0           836 ( 10)         ld (HL),0A0H       ; klucz
+44F6-E1              837 ( 10)         pop HL             ;
+44F7-C9              838 ( 10)         ret                ;
+44F8-                839
+44F8-C5              840 ( 11) DELAY:  push    BC
+44F9-F5              841 ( 11)         push    AF
+44FA-06 02           842 (  7)         ld      B,02H
+44FC-                843       .delay
+44FC-76              844 (  4)         halt            ; 2ms
+44FD-10 FD           845 ( 8+)         djnz    .delay  ; while( --B )
+44FF-F1              846 ( 10)         pop     AF
+4500-C1              847 ( 10)         pop     BC
+4501-C9              848 ( 10)         ret
+4502-                849       ;*********************************************************************
+4502-                850       ;PROGRAM KOPIOWANIA DANYCH DO EEPROM (NP. KM28C64A) DLA CA80
+4502-                851
+4502-                852       ZC:   ;kopiuj dane do EEPROM np MK28C64 W U11
+4502-                853             ;przed zapisem nalezy zdjac SDP
+4502-                854             ;[C][ADR. POCZ][.][ADR. KONCA][.][ADR. PRZEZNACZENIA][=]
+4502-0C              855 (  4)         inc C            ; 3 parametry
+4503-CD 13 02        856 ( 17)         call EXPR
+4506-40              857               .db 40H
+4507-E1              858 ( 10)         pop HL           ;ADR. PRZEZNACZENIA
+4508-7D              859 (  4)         ld A,L
+4509-E6 C0           860 (  7)         and 0C0H         ;wyrownujemy do poczatku strony
+450B-6F              861 (  4)         ld L,A           ;zapis 64 bajtow mozliwy tylko dla jednej strony
+450C-E5              862 ( 11)         push hl
+450D-DD E1           863 ( 14)         pop IX           ;ADR. PRZEZNACZENIA
+450F-D1              864 ( 10)         pop DE           ;ADR. KONCA
+4510-E1              865 ( 10)         pop HL           ;ADR. POCZATKU
+4511-3E C0           866 (  7)         ld A,0C0H        ;wyrownujemy do poczatku strony
+4513-A5              867 (  4)         and L
+4514-6F              868 (  4)         ld L,A
+4515-76              869 (  4)         halt                        ; <2ms (dla pewnosci, bo mozemy trafic tuz przed NMI)
+4516-                870       .loop:
+4516-06 40           871 (  7)         ld B,40h                    ; zapis 64 bajtÛw jednoczesnie
+4518-                872       .loop1:
+4518-4E              873 (  7)         ld C,(HL)                       ; kopiuj bajt
+4519-DD 71 00        874 ( 19)         ld (IX+0),C                 ; Tlbc (load byte cycle 200 ns max 150 us)
+451C-DD 23           875 ( 10)         inc IX                      ;- musimy sie spieszyc
+451E-CD 3B 02        876 ( 17)         call HILO
+4521-D8              877 ( 5+)         ret C
+4522-10 F4           878 ( 8+)         djnz .loop1                 ; czy juz 64?
+4524-CD 20 00        879 ( 17)         call ladr                   ; pokaz HL
+4527-44              880               .db $44                     ;
+4528-76              881 (  4)         halt                        ; 2ms (nota katalogowa: czas zapisu MAX 5 ms)
+4529-76              882 (  4)         halt                        ; 2ms
+452A-76              883 (  4)         halt                        ; 2ms
+452B-18 E9           884 ( 12)         jr .loop                    ;
+452D-                885               ;
+452D-                886
+452D-                887       KOM_E_SDP:
+452D-50 79 77 5E 
+     00 3F 54 38 
+     FF              888               .db 50H,79H,77H,5EH,0H,3FH,54H,38H,EOM  ;read_onl
+4536-                889       ;*********************************************************************
+4536-                890       ZE: ; ustaw Software Data Protection (enable_SDP)
+4536-3E 55           891 (  7)         ld A,K5                     ;
+4538-21 55 95        892 ( 10)         ld HL,9555H                 ; adres 8000H + 1555H
+453B-36 AA           893 ( 10)         ld (HL),KA                  ; klucz
+453D-11 AA AA        894 ( 10)         ld DE,0AAAAH                ; adres 8000H + 2AAAH
+4540-12              895 (  7)         ld (DE),A                   ; klucz
+4541-36 A0           896 ( 10)         ld (HL),0A0H                ; klucz
+4543-21 2D 45        897 ( 10)         ld HL,KOM_E_SDP
+4546-CD D4 01        898 ( 17)         call PRINT
+4549-80              899               .db 80H
+454A-CD C6 FF        900 ( 17)         call CI
+454D-                901               ; PamiÍÊ juø jest zabezpieczona
+454D-C9              902 ( 10)         ret
+454E-                903                       ;
+454E-                904       KOM_D_SDP:
+454E-1C 00 39 77 
+     54 00 3E 50 
+     FF              905               .db 1CH,0,39H,77H,54H,0,3EH,50H,EOM ;u_can_wr
+4557-                906       ;*********************************************************************
+4557-                907       ZD:  ; odblokuj SDP (disable_SDP)
+4557-3E 55           908 (  7)         ld A,55H
+4559-21 55 95        909 ( 10)         ld HL,9555H                 ; adres
+455C-36 AA           910 ( 10)         ld (HL),0AAH                ; klucz
+455E-11 AA AA        911 ( 10)         ld DE,0AAAAH                ; adres
+4561-12              912 (  7)         ld (DE),A                   ; klucz
+4562-36 80           913 ( 10)         ld (HL),080H                ; klucz
+4564-36 AA           914 ( 10)         ld (HL),0AAH                ; klucz
+4566-12              915 (  7)         ld (DE),A                   ; klucz
+4567-36 20           916 ( 10)         ld (HL),020H                ; klucz
+4569-21 4E 45        917 ( 10)         ld HL,KOM_D_SDP
+456C-CD D4 01        918 ( 17)         call PRINT
+456F-80              919               .db 80H
+4570-CD C6 FF        920 ( 17)         call CI
+4573-                921               ; PamiÍÊ juø jest odbezpieczona
+4573-C9              922 ( 10)         ret
+4574-                923       ;*********************************************************************
+4574-                924       ZF: ; szukanie nazw programow
+4574-                925               ; [F][NR SEKTORA][=]  SZUKAJ NAZW PROGRAM”W OD SEKTORA NR...
+4574-                926               ; WYåWIETLA NAZWY PROGRAM”W I ICH NUMERY
+4574-                927               ; [F][=]              SZUKAJ NAZW PROGRAM”W OD SEKTORA "00"
+4574-21 BF 45        928 ( 10)         ld HL,T_NAZWY
+4577-CD D4 01        929 ( 17)         call PRINT
+457A-52              930               .db 52H
+457B-CD 52 4E        931 ( 17)         CALL LCD_CLR
+457E-11 00 00        932 ( 10)         LD DE,0                       ; D - NR SEKTORA
+4581-CD 07 00        933 ( 17)         CALL TI                       ; E - NR ZNALEZIONEJ NAZWY
+4584-20              934               .db 20h
+4585-38 07           935 ( 7+)         JR C,.ODZERA
+4587-CA 56 40        936 ( 10)         JP Z,ERFL
+458A-CD F8 01        937 ( 17)         CALL PARA1
+458D-55              938 (  4)         LD D,L
+458E-                939       .ODZERA:
+458E-7A              940 (  4)         LD A,D
+458F-FE 80           941 (  7)         CP 80h
+4591-30 0E           942 ( 7+)         JR NC,.KON_SEC
+4593-32 FD 5F        943 ( 13)         LD (SECT),A
+4596-3A 00 60        944 ( 13)         LD A,(FL)
+4599-FE FD           945 (  7)         CP 0FDh
+459B-CC C5 45        946 (10+)         CALL Z,SZ_NAZWY
+459E-14              947 (  4)         INC D
+459F-18 ED           948 ( 12)         JR .ODZERA
+45A1-                949       .KON_SEC:
+45A1-21 AE 45        950 ( 10)         LD HL,T_KON_SEC
+45A4-43              951 (  4)         LD B,E
+45A5-0E 00           952 (  7)         LD C,0
+45A7-CD 55 41        953 ( 17)         CALL PRINT_LX
+45AA-CD F8 45        954 ( 17)         CALL PAUZA
+45AD-C9              955 ( 10)         RET
+45AE-                956       T_KON_SEC:
+45AE-4B 6F 6E 69 
+     65 63 20 73 
+     65 6B 74 6F 
+     72 6F 77 2E     957               .db "Koniec sektorow."
+45BE-FF              958               .db EOM
+45BF-                959       T_NAZWY:
+45BF-54 77 5B 3E 
+     66 FF           960               .db 54h, 77h, 5Bh, 3Eh, 66h, EOM
+45C5-                961       SZ_NAZWY:
+45C5-21 D3 6F        962 ( 10)         LD HL,NAME1-BUFOR+FL+3  ; W SEKTORZE FLASH
+45C8-CD CE 45        963 ( 17)         CALL SZ_N1
+45CB-21 E7 6F        964 ( 10)         LD HL,NAME2-BUFOR+FL+3  ; W SEKTORZE FLASH
+45CE-                965       SZ_N1:
+45CE-7E              966 (  7)         LD A,(HL)
+45CF-FE FF           967 (  7)         CP EOM
+45D1-C4 D5 45        968 (10+)         CALL NZ,WYS_NAZWE
+45D4-C9              969 ( 10)         RET
+45D5-                970       WYS_NAZWE:
+45D5-E5              971 ( 11)         PUSH HL
+45D6-43              972 (  4)         LD B,E
+45D7-0E 00           973 (  7)         LD C,0
+45D9-CD 87 4E        974 ( 17)         CALL LCD_SET_CURSOR
+45DC-2B              975 (  6)         DEC HL
+45DD-2B              976 (  6)         DEC HL
+45DE-2B              977 (  6)         DEC HL
+45DF-7E              978 (  7)         LD A,(HL)
+45E0-CD 5D 4E        979 ( 17)         CALL LCD_BYTE
+45E3-CD B9 4E        980 ( 17)         CALL SPACJA
+45E6-E1              981 ( 10)         POP HL
+45E7-CD 2A 4E        982 ( 17)         CALL LCD_PRINT
+45EA-1C              983 (  4)         INC E
+45EB-7B              984 (  4)         LD A,E
+45EC-E6 03           985 (  7)         AND 3
+45EE-CC F8 45        986 (10+)         CALL Z,PAUZA
+45F1-C9              987 ( 10)         RET
+45F2-                988       T_WYBOR:
+45F2-39 76 3F 3F 
+     6D FF           989               .db 39h, 76h, 3Fh, 3Fh, 6Dh, EOM
+45F8-                990       PAUZA:
+45F8-21 F2 45        991 ( 10)         LD HL,T_WYBOR
+45FB-CD D4 01        992 ( 17)         CALL PRINT
+45FE-52              993               .db 52h
+45FF-CD 07 00        994 ( 17)         CALL TI
+4602-20              995               .db 20h
+4603-38 0F           996 ( 7+)         JR C,.NEXT
+4605-28 0A           997 ( 7+)         JR Z,.BACK
+4607-CD F8 01        998 ( 17)         CALL PARA1
+460A-4D              999 (  4)         LD C,L
+460B-CD 36 43       1000 ( 17)         CALL Z6+6
+460E-C3 20 40       1001 ( 10)         JP FLASH
+4611-               1002       .BACK:
+4611-11 00 00       1003 ( 10)         LD DE,0
+4614-               1004       .NEXT:
+4614-CD 52 4E       1005 ( 17)         CALL LCD_CLR
+4617-C9             1006 ( 10)         RET
+4618-               1007       ;*********************************************************************
+4618-               1008       ; FORMATOWANIE FLASH. WYKONUJEMY TYLKO RAZ, WI C NIE MA GO W MENU.
+4618-               1009       ; ABY JE WYWO£A∆, NALEØY WYBRA∆ KASOWANIE SEKTORA FF
+4618-               1010       ;*********************************************************************
+4618-               1011       FLASH_FORMAT:
+4618-06 7F          1012 (  7)           LD B,7Fh
+461A-21 00 60       1013 ( 10)           LD HL,FL
+461D-               1014       .FORM1:
+461D-78             1015 (  4)           LD A,B
+461E-32 FD 5F       1016 ( 13)           LD (SECT),A
+4621-7E             1017 (  7)           LD A,(HL)
+4622-FE FF          1018 (  7)           CP EOM           ; OMIJAMY SEKTORY SKASOWANE
+4624-28 08          1019 ( 7+)           JR Z,.FORM
+4626-FE FD          1020 (  7)           CP 0FDh           ; OMIJAMY SEKTORY ZAPISANE
+4628-28 04          1021 ( 7+)           JR Z,.FORM        ; ØEBY NIE TRACI∆ PROGRAM”W
+462A-78             1022 (  4)           LD A,B
+462B-CD B9 44       1023 ( 17)           CALL SST_S_ERASE
+462E-               1024       .FORM:
+462E-10 ED          1025 ( 8+)           DJNZ .FORM1
+4630-C9             1026 ( 10)           RET
+4631-               1027       ;********************************************************
+4631-               1028       ;             Podprogramy do obslugi LCD.               *
+4631-               1029       ; Sterowanie 8-bitowe wyswietlaczem LCD 4 x 20 znakÛw   *
+4631-               1030       ;       pod≥πczonym bezpoúrednio do szyny danych        *
+4631-               1031       ; Enable - 40H, RS - A0, R/W - A1, DATA D0 .. D7 Z80    *
+4631-               1032       ;********************************************************
+4631-               1033       ;     Wykorzysta≥em fagmenty kodu kolegi @Nadolic       *
+4631-               1034       ;                     (C) Zegar                         *
+4631-               1035       ;********************************************************
+4631-               1036       ;********************************************************
+4631-               1037       ; Podstawowe instr. ustawiajace LCD
+4631-               1038       ; 38-sterowanie 8-bit, 1-CLR LCD, 6- przesuw kursora na prawo
+4631-               1039       ; E-kursor na dole i wlacz LCD
+4631-               1040       ;********************************************************
+4E00-               1041         .or 4E00h
+4E00-               1042       LCD_INIT:
+4E00-3E 30          1043 (  7)   ld a, 30h         ; patrz nota katalogowa
+4E02-D3 40          1044 ( 11)   out (LCD_IR),a
+4E04-76             1045 (  4)   halt              ; wait for MORE then 4,1 ms
+4E05-76             1046 (  4)   halt              ; NIE WOLNO SPRAWDZA∆ BUSY!
+4E06-76             1047 (  4)   halt              ; Czekaj ok. 3*2 ms do nastÍpnego NMI
+4E07-3E 30          1048 (  7)   ld a, 30h
+4E09-D3 40          1049 ( 11)   out (LCD_IR),a
+4E0B-CD 37 4E       1050 ( 17)   call DEL_100US    ; wait for MORE then 100 us
+4E0E-CD 37 4E       1051 ( 17)   call DEL_100US
+4E11-3E 30          1052 (  7)   ld a, 30h
+4E13-D3 40          1053 ( 11)   out (LCD_IR),a
+4E15-CD 37 4E       1054 ( 17)   call DEL_100US
+4E18-3E 38          1055 (  7)   ld a, 38h         ; sterowanie 8-bit
+4E1A-D3 40          1056 ( 11)   out (LCD_IR),a
+4E1C-CD 52 4E       1057 ( 17)   call LCD_CLR      ; A tutaj juø nam wszystko wolno
+4E1F-3E 0E          1058 (  7)   ld a, 0Eh         ; kursor na dole i wlacz LCD
+4E21-CD 4C 4E       1059 ( 17)   call LCD_COMM
+4E24-3E 06          1060 (  7)   ld a, 6           ; przesuw kursora w prawo
+4E26-CD 4C 4E       1061 ( 17)   call LCD_COMM
+4E29-C9             1062 ( 10)   ret               ; koniec LCD_INIT
+4E2A-               1063
+4E2A-               1064       ;********************************************************
+4E2A-               1065       ; Wyswietl tekst wg (hl), koniec tekstu 0FFh
+4E2A-               1066       ;********************************************************
+4E2A-               1067       LCD_PRINT:
+4E2A-06 14          1068 (  7)   ld b,20          ; max liczba znakow (gdy brak 0FFh)
+4E2C-               1069       .wys_t2
+4E2C-7E             1070 (  7)   ld a,(hl)         ; pobierz znak
+4E2D-FE FF          1071 (  7)   cp EOM
+4E2F-C8             1072 ( 5+)   RET Z             ; czy koniec?
+4E30-CD BF 4E       1073 ( 17)   CALL LCD_A
+4E33-23             1074 (  6)   inc hl
+4E34-10 F6          1075 ( 8+)   djnz .wys_t2
+4E36-               1076       .wys2
+4E36-C9             1077 ( 10)   ret
+4E37-               1078       ;********************************************************
+4E37-               1079       ; Czekaj 0.1 ms
+4E37-               1080       ;********************************************************
+4E37-               1081       DEL_100US:
+4E37-3E 30          1082 (  7)   ld a, 30h ; dla CLK 4MHz
+4E39-               1083       .op2
+4E39-3D             1084 (  4)   dec a
+4E3A-20 FD          1085 ( 7+)   jr nz,.op2
+4E3C-C9             1086 ( 10)   ret
+4E3D-               1087       ;********************************************************
+4E3D-               1088       ; Czekaj na gotowoúÊ LCD
+4E3D-               1089       ;********************************************************
+4E3D-               1090       busy:
+4E3D-F5             1091 ( 11)     push af
+4E3E-C5             1092 ( 11)     PUSH BC
+4E3F-06 00          1093 (  7)     LD B,0
+4E41-               1094       .busy1
+4E41-DB 42          1095 ( 11)     in a,(LCD_BUSY)
+4E43-E6 80          1096 (  7)     and 80h
+4E45-28 02          1097 ( 7+)     JR Z,.FREE
+4E47-10 F8          1098 ( 8+)     djnz .busy1         ; zabezpieczenie przed zawieszeniem
+4E49-               1099       .FREE:
+4E49-C1             1100 ( 10)     POP BC
+4E4A-F1             1101 ( 10)     pop af
+4E4B-C9             1102 ( 10)     ret
+4E4C-               1103       ;********************************************************
+4E4C-               1104       ; Wyúlij rozkaz (command) do LCD
+4E4C-               1105       ;********************************************************
+4E4C-               1106       LCD_COMM:
+4E4C-CD 3D 4E       1107 ( 17)   call busy
+4E4F-D3 40          1108 ( 11)   out (LCD_IR),a
+4E51-C9             1109 ( 10)   RET
+4E52-               1110       ;********************************************************
+4E52-               1111       ; CzyúÊ LCD i ustaw kursor na pozycji poczatkowej LCD
+4E52-               1112       ;********************************************************
+4E52-               1113       LCD_CLR:
+4E52-3E 01          1114 (  7)   ld a, 1
+4E54-CD 4C 4E       1115 ( 17)   call LCD_COMM
+4E57-               1116       ;********************************************************
+4E57-               1117       ; Ustaw kursor na poczatek LCD
+4E57-               1118       ;********************************************************
+4E57-               1119       LCD_home:
+4E57-3E 80          1120 (  7)   ld a, L1            ; 1. linia
+4E59-CD 4C 4E       1121 ( 17)   call LCD_COMM
+4E5C-C9             1122 ( 10)   ret
+4E5D-               1123       ;********************************************************
+4E5D-               1124       ; Wyswietl zaw. rej A na LCD, wg aktualnego stanu LCD
+4E5D-               1125       ;********************************************************
+4E5D-               1126       LCD_BYTE:
+4E5D-E5             1127 ( 11)   push hl
+4E5E-CD 74 4E       1128 ( 17)   call BYTE_TO_ASCII
+4E61-7C             1129 (  4)   ld a, H
+4E62-CD BF 4E       1130 ( 17)   CALL LCD_A          ; bez ustawiania pozycji kursora
+4E65-7D             1131 (  4)   ld a, L
+4E66-CD BF 4E       1132 ( 17)   CALL LCD_A          ; bez ustawiania pozycji kursora
+4E69-E1             1133 ( 10)   pop hl
+4E6A-C9             1134 ( 10)   ret
+4E6B-               1135
+4E6B-               1136       ;********************************************************
+4E6B-               1137       ; Wyswietl zaw. rej HL na LCD, wg aktualnego stanu LCD
+4E6B-               1138       ;********************************************************
+4E6B-               1139       LCD_WORD:
+4E6B-7C             1140 (  4)   ld a, H
+4E6C-CD 5D 4E       1141 ( 17)   CALL LCD_BYTE          ; bez ustawiania pozycji kursora
+4E6F-7D             1142 (  4)   ld a, L
+4E70-CD 5D 4E       1143 ( 17)   CALL LCD_BYTE          ; bez ustawiania pozycji kursora
+4E73-C9             1144 ( 10)   ret
+4E74-               1145
+4E74-               1146       ;********************************************************
+4E74-               1147       ; Podziel rej. A na dwa znaki i zwrÛÊ je w HL
+4E74-               1148       ;********************************************************
+4E74-               1149       BYTE_TO_ASCII:
+4E74-F5             1150 ( 11)   PUSH AF
+4E75-E6 F0          1151 (  7)   AND 0F0H  ; usun mlodsze bity
+4E77-0F             1152 (  4)   RRCA      ; przesuÒ w prawo
+4E78-0F             1153 (  4)   RRCA
+4E79-0F             1154 (  4)   RRCA
+4E7A-0F             1155 (  4)   RRCA
+4E7B-CD D4 4E       1156 ( 17)   CALL HEXtoASCII
+4E7E-67             1157 (  4)   LD H, A
+4E7F-F1             1158 ( 10)   POP AF
+4E80-E6 0F          1159 (  7)   AND 0FH ; usun starsze bity
+4E82-CD D4 4E       1160 ( 17)   CALL HEXtoASCII
+4E85-6F             1161 (  4)   LD L, A
+4E86-C9             1162 ( 10)   RET
+4E87-               1163       ;********************************************************
+4E87-               1164       ; Ustaw kursor. B - wiersz, C - kolumna
+4E87-               1165       ;********************************************************
+4E87-               1166       LCD_SET_CURSOR:       ;
+4E87-78             1167 (  4)   ld a, B             ; NR WIERSZA 0-3
+4E88-CD 96 4E       1168 ( 17)   CALL LCD_ROW_ADR
+4E8B-79             1169 (  4)   LD A,C              ; NR KOLUMNY 0-19
+4E8C-FE 14          1170 (  7)   CP 14H
+4E8E-38 01          1171 ( 7+)   JR C,COL_OK
+4E90-AF             1172 (  4)   XOR A               ; ZACZNIJ OD ZERA
+4E91-               1173       COL_OK:
+4E91-80             1174 (  4)   ADD A,B
+4E92-CD 4C 4E       1175 ( 17)   call LCD_COMM
+4E95-               1176         ; CALL busy_TEST
+4E95-C9             1177 ( 10)   ret
+4E96-               1178       ;********************************************************
+4E96-               1179       ; Oblicz adres poczπtku linii nr w A (0-3)
+4E96-               1180       ; Zwraca adres linii w B (jeden bajt)
+4E96-               1181       ;********************************************************
+4E96-               1182       LCD_ROW_ADR:
+4E96-E5             1183 ( 11)   push HL
+4E97-E6 03          1184 (  7)   AND 3               ; Dla pewnoúci
+4E99-21 61 40       1185 ( 10)   ld HL,NUM_LINII
+4E9C-85             1186 (  4)   add A,L
+4E9D-6F             1187 (  4)   ld L,A
+4E9E-46             1188 (  7)   ld B,(HL)
+4E9F-E1             1189 ( 10)   pop HL
+4EA0-C9             1190 ( 10)   RET
+4EA1-               1191       ;********************************************************
+4EA1-               1192       ; Wyúwietl czas systemowy CA80 na LCD
+4EA1-               1193       ;********************************************************
+4EA1-               1194       czas_LCD:
+4EA1-21 EF FF       1195 ( 10)   ld HL,GODZ
+4EA4-7E             1196 (  7)   ld A,(HL)
+4EA5-CD 5D 4E       1197 ( 17)   call LCD_BYTE
+4EA8-CD BD 4E       1198 ( 17)   call dwukropek
+4EAB-2B             1199 (  6)   dec HL
+4EAC-7E             1200 (  7)   ld A,(HL)
+4EAD-CD 5D 4E       1201 ( 17)   call LCD_BYTE
+4EB0-CD BD 4E       1202 ( 17)   call dwukropek
+4EB3-2B             1203 (  6)   dec HL              ; w HL SEK ;)
+4EB4-7E             1204 (  7)   ld A,(HL)
+4EB5-CD 5D 4E       1205 ( 17)   call LCD_BYTE
+4EB8-C9             1206 ( 10)   ret
+4EB9-               1207       ;********************************************************
+4EB9-               1208       ; Wyúwietl spacjÍ (np. kasowanie fragmentu LCD)
+4EB9-               1209       ;********************************************************
+4EB9-               1210       SPACJA:
+4EB9-3E A0          1211 (  7)   LD A," "
+4EBB-18 02          1212 ( 12)   JR LCD_A
+4EBD-               1213       ;********************************************************
+4EBD-               1214       ; Wyúwietl separator zegara
+4EBD-               1215       ;********************************************************
+4EBD-               1216       dwukropek:
+4EBD-3E BA          1217 (  7)   ld a, ":"             ;dwukropek
+4EBF-               1218       ;********************************************************
+4EBF-               1219       ; Wyúwietl jeden znak ASCII na LCD (w A kod znaku)
+4EBF-               1220       ;********************************************************
+4EBF-               1221       LCD_A:
+4EBF-CD 3D 4E       1222 ( 17)   call busy
+4EC2-D3 41          1223 ( 11)   out (LCD_WDR),a
+4EC4-C9             1224 ( 10)   ret
+4EC5-               1225       ;********************************************************
+4EC5-               1226       ; Kasuj jednπ liniÍ LCD
+4EC5-               1227       ;********************************************************
+4EC5-               1228       LCD_1L_CLR:             ; W A numer linii do skasowania (0 - 3)
+4EC5-CD 96 4E       1229 ( 17)   CALL LCD_ROW_ADR      ; ZWRACA W B ADRES LINII
+4EC8-78             1230 (  4)   LD A,B
+4EC9-CD 4C 4E       1231 ( 17)   CALL LCD_COMM
+4ECC-06 14          1232 (  7)   ld b,14h              ; 20 znakÛw w linii
+4ECE-               1233       .CLR1:
+4ECE-CD B9 4E       1234 ( 17)   CALL SPACJA
+4ED1-10 FB          1235 ( 8+)   djnz .CLR1
+4ED3-C9             1236 ( 10)   ret
+4ED4-               1237       ;********************************************************
+4ED4-               1238       ; ZamieÒ cyfrÍ HEX na ASCII (do wyswietlania na LCD)
+4ED4-               1239       ;********************************************************
+4ED4-               1240       HEXtoASCII:
+4ED4-FE 0A          1241 (  7)   CP 0AH                ; litera czy cyfra?
+4ED6-DE 69          1242 (  7)   SBC A,69H
+4ED8-27             1243 (  4)   DAA                   ;Taki trick znalazlem w sieci :D
+4ED9-C9             1244 ( 10)   RET
+4EDA-               1245       ;********************************************************
+4EDA-               1246       ; --------teksty do testu
+4EDA-               1247       ;********************************************************
+4EDA-               1248       MES1:
+4EDA-48 45 4C 4C 
+     4F 20 57 4F 
+     52 4C 44 21    1249        .db  "HELLO WORLD!"
+4EE6-FF             1250        .db EOM
+4EE7-               1251       MES2:
+4EE7-46 52 4F 4D 
+     20 43 41 38 
+     30 2E          1252        .db "FROM CA80."
+4EF1-FF             1253        .db EOM
+4EF2-               1254       TEXT_BUSY:
+4EF2-42 75 73 79 
+     3A 20          1255         .db "Busy: "
+4EF8-FF             1256         .db EOM
+4EF9-               1257
+4EF9-               1258          ;################################################
+4EF9-               1259          ;##   po ostatnim bajcie naszego programu wpisujemy 2 x AAAA
+4EF9-               1260          ;.db 0AAh, 0AAh, 0AAh, 0AAh ; po tym markerze /2x AAAA/ nazwa programu
+4EF9-               1261          ;################################################
+4EF9-AA AA AA AA    1262        .db 0AAh, 0AAh, 0AAh, 0AAh ; marker nazwy
+4EFD-43 41 38 30 
+     5F 46 4C 41 
+     53 48 32 5F 
+     64 65 6D 6F    1263        .db "CA80_FLASH2_demo"       ; nazwa programu, max 16 znakÛw /dla LCD 4x 20 znakow w linii/
+4F0D-FF             1264        .db 255                ; koniec tekstu
+4F0E-               1265
+4F0E-               1266       ; koniec zabawy. :-)
+4F0E-               1267
+4F0E-               1268
