@@ -1,0 +1,25 @@
+0000-                 13               .sf Magnetofon_demo.sym
+0000-                 14               .sm code           ;
+D000-                 15               .or 0D000H
+D000-                 16       ;Demo Flash
+00FF-                 17       EOM     .eq 0FFH      ; Koniec komunikatu
+4337-                 18       FMAG    .eq 4337H     ; Adres nale¿y sprawdziæ w pliku CA80_Flash*.lst
+D000-31 66 FF         19 ( 10)         ld SP,0FF66H
+D003-                 20       .loop
+D003-06 7E            21 (  7)         ld B,7EH      ;Numer sektora
+D005-CD 37 43         22 ( 17)         call FMAG
+D008-06 FE            23 (  7)         ld B,0FEH     ;Numer sektora
+D00A-CD 37 43         24 ( 17)         call FMAG
+D00D-06 7D            25 (  7)         ld B,7DH      ;Numer sektora
+D00F-CD 37 43         26 ( 17)         call FMAG
+D012-18 EF            27 ( 12)         jr .loop
+D014-                 28          ;################################################
+D014-                 29          ;##   po ostatnim bajcie naszego programu wpisujemy 2 x AAAA
+D014-                 30          ;.db 0AAh, 0AAh, 0AAh, 0AAh ; po tym markerze /2x AAAA/ nazwa programu
+D014-                 31          ;################################################
+D014-AA AA AA AA      32        .db 0AAh, 0AAh, 0AAh, 0AAh ; marker nazwy
+D018-4D 61 67 6E 
+     65 74 6F 66 
+     6F 6E 2D 64 
+     65 6D 6F         33        .db "Magnetofon-demo"       ; nazwa programu, max 16 znaków /dla LCD 4x 20 znakow w linii/
+D027-FF               34        .db EOM                    ; koniec tekstu

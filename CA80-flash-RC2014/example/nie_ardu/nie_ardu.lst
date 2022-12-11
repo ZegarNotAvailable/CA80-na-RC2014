@@ -1,0 +1,276 @@
+0000-                  9               .sf nie_ardu.sym
+0000-                 10               .in ca80.inc
+0000-            I     1
+00E0-            I     2       USER8255        .eq             $E0
+0000-            I     3       PA                  .eq         0
+0001-            I     4       PB                  .eq         1
+0002-            I     5       PC                  .eq         2
+0003-            I     6       CTRL              .eq           3
+0000-            I     7             ;
+0000-            I     8             ;LICZNIKI PROGRAMOWE
+0000-            I     9             ;
+FFE8-            I    10       LCI:      .eq $FFE8
+FFE9-            I    11       SYG:      .eq $FFE9
+FFEA-            I    12       TIME:     .eq $FFEA             ; Licznik binarny %256 (liczy w dÛ≥) co 2 ms
+0000-            I    13             ;
+0000-            I    14             ;ZEGAR CZASU RZECZYWISTEGO
+0000-            I    15             ;
+FFEB-            I    16       MSEK:     .eq $FFEB             ; <0, 4>
+FFEC-            I    17       SETSEK:   .eq $FFEC             ; <0, 99> setne sekundy
+FFED-            I    18       SEK:      .eq $FFED             ; <0, 59> sekundy
+FFEE-            I    19       MIN:      .eq $FFEE             ; <0, 59> minuty
+FFEF-            I    20       GODZ:     .eq $FFEF             ; <0, 23> godziny
+FFF0-            I    21       DNITYG:   .eq $FFF0             ; <7, 6, 5, 4, 3, 2, 1>
+FFF1-            I    22       DNIM:     .eq $FFF1             ; <1 ... > dni miesiπca
+FFF2-            I    23       MIES:     .eq $FFF2             ; <1, 12> miesiπce
+FFF3-            I    24       LATA:     .eq $FFF3             ; <0, 99> rok
+0000-            I    25             ;
+0000-            I    26                               ;       BUFOR WYåWIETLACZA
+0000-            I    27             ;
+FFF7-            I    28       CYF0        .eq $FFF7
+FFF8-            I    29       CYF1        .eq $FFF8
+FFF9-            I    30       CYF2        .eq $FFF9
+FFFA-            I    31       CYF3        .eq $FFFA
+FFFB-            I    32       CYF4        .eq $FFFB
+FFFC-            I    33       CYF5        .eq $FFFC
+FFFD-            I    34       CYF6        .eq $FFFD
+FFFE-            I    35       CYF7        .eq $FFFE
+0000-            I    36             ;
+0000-            I    37             ; PROCEDURY SYSTEMOWE
+0000-            I    38             ;
+0000-            I    39             ; WYåWIETLACZ
+0000-            I    40             ;
+FFC1-            I    41       APWYS     .eq $FFC1 ; wskazuje po≥oøenie parametru wyúwietlacza
+FFF6-            I    42       PWYS      .eq $FFF6 ; parametr wyúwietlacza
+01AB-            I    43       COM           .eq       $01AB   ; COM - pokazuje znak 7-seg z rejestru C
+01AC-            I    44       COM1      .eq $01AC ; COM1 - pokazuje znak 7-seg z rejestru C bez zmiany PWYS
+0010-            I    45       CLR           .eq       $0010   ; CLR - kasowanie wyswietlacza
+0011-            I    46       CLR1      .eq $0011 ; CLR1 - kasowanie wyswietlacza bez zmiany PWYS
+01D4-            I    47       PRINT       .eq $01D4   ; PRINT - drukuje komunikat z (HL)
+01D5-            I    48       PRINT1    .eq $01D5 ; PRINT1 - drukuje komunikat z (HL) bez zmiany PWYS
+01E0-            I    49       CO        .eq $01E0 ; CO - wyswietlenie cyfry hex
+01E1-            I    50       CO1       .eq $01E1 ; CO1 - wyswietlenie cyfry hex bez zmiany PWYS
+0018-            I    51       LBYTE       .eq $0018   ; LBYTE - wyswietlenie Aku w HEX
+001B-            I    52       LBYTE1    .eq $001B ; LBYTE1 - wyswietlenie Aku w HEX bez zmiany PWYS
+0020-            I    53       LADR      .eq $0020 ; LADR - wyswietlenie HL w HEX
+022D-            I    54       LADR1     .eq $022D ; LADR1 - wyswietlenie HL w HEX bez zmiany PWYS
+022D-            I    55       CZAS        .eq $022D   ; CZAS - pokazuje czas/date
+0000-            I    56             ;
+0000-            I    57             ; KLAWIATURA
+0000-            I    58             ;
+FFC3-            I    59       CSTS      .eq $FFC3 ; CSTS - test czy klawisz nacisniety
+FFC6-            I    60       CI        .eq $FFC6 ; CI - pobranie znaku z klawiatury
+0000-            I    61             ;
+0000-            I    62             ; KLAWIATURA I WYåWIETLACZ
+0000-            I    63             ;
+0007-            I    64       TI        .eq $0007 ; TI - pobranie znaku z echem
+0008-            I    65       TI1       .eq $0008 ; TI1 - pobranie znaku z echem bez zmiany PWYS
+01F4-            I    66       PARAM     .eq $01F4 ; PARAM - pobranie liczby 16-bit do HL z echem
+01F5-            I    67       PARAM1    .eq $01F5 ; PARAM1 - pobranie liczby 16-bit do HL z echem bez zmiany PWYS
+01F8-            I    68       PARA1     .eq $01F8 ; PARA1 - pierwszπ cyfrÍ podajemy w akumulatorze a dalej jak PARAM1
+0213-            I    69       EXPR      .eq $0213 ; EXPR - pobranie ciagu liczb 16bit na stos
+0214-            I    70       EXPR1     .eq $0214 ; EXPR1 - pobranie ciagu liczb 16bit na stos bez zmiany PWYS
+0000-            I    71             ;
+0000-            I    72             ; POMOCNICZE
+0000-            I    73             ;
+023B-            I    74       HILO      .eq $023B ; HILO - iterator, HL++, CY = !(DE >= HL)
+00C9-            I    75       SPEC      .eq $00C9 ; RET - dla obs≥ugi magnetofonu
+0000-            I    76             ;
+0000-            I    77             ; OBS£UGA MAGNETOFONU
+0000-            I    78             ;
+0626-            I    79       ZMAG      .eq $0626 ; zapis na magnetofon
+067B-            I    80       ZEOF      .eq $067B ; zapis rekordu EOF
+071B-            I    81       OMAG      .eq $071B ; odczyt z magnetofonu
+FFB2-            I    82       MAGSP     .eq $FFB2 ; parametr szybkoúci zapisu
+FFB1-            I    83       DLUG      .eq $FFB1 ; d≥ugoúÊ rekordu danych
+0000-            I    84
+00FF-            I    85       EOM       .eq $FF
+0000-                 11               .sm code                ;
+C000-                 12               .or $c000               ; U12/C000
+C000-                 13                       ;ld  SP,$ff66                ;
+C000-                 14                       ;
+C000-                 15       .begin
+C000-CD 10 00         16 ( 17)     call CLR
+C003-80               17             .db 80H
+C004-                 18       .repeat
+C004-21 48 C0         19 ( 10)     ld HL, mess
+C007-CD 17 C0         20 ( 17)     call NEWPRINT
+C00A-20 F8            21 ( 7+)                 jr NZ,.repeat
+C00C-                 22               ;
+C00C-                 23
+C00C-C5               24 ( 11) delay:  push    BC
+C00D-F5               25 ( 11)         push    AF
+C00E-47               26 (  4)         ld B,A
+C00F-                 27       .delay
+C00F-00               28 (  4)         nop             ; 2ms (bylo HALT)
+C010-76               29 (  4)         halt            ; 2ms
+C011-76               30 (  4)         halt            ; 2ms
+C012-10 FB            31 ( 8+)         djnz    .delay  ; while( --B )
+C014-F1               32 ( 10)         pop     AF
+C015-C1               33 ( 10)         pop     BC
+C016-C9               34 ( 10)         ret
+C017-                 35
+C017-                 36       NEWPRINT:
+C017-                 37                       ; HL adres tabeli znaczk√≥w
+C017-                 38                       ; kazdy znak ma trzy parametry: kod 7seg, PWYS, DELAY (razy 6ms)
+C017-                 39                       ; jezeli bit3 PWYS (normalnie zero), to wstawiamy kursor
+C017-                 40                       ;
+C017-DD 21 C1 FF      41 ( 14)                 ld IX,APWYS
+C01B-DD 5E 00         42 ( 19)                 ld E,(IX)
+C01E-DD 56 01         43 ( 19)                 ld D,(IX+1)                 ; nie u≈ºy≈Çem Hi i Lo ;-(
+C021-D5               44 ( 11)                 push DE
+C022-DD E1            45 ( 14)                 pop IX                      ; adres PWYS
+C024-                 46       loop:
+C024-7E               47 (  7)     ld A,(HL)                   ; wez element tabeli - ZNAK
+C025-FE FF            48 (  7)     cp 0FFH
+C027-C8               49 ( 5+)     ret Z                       ; koniec tabeli znak√≥w
+C028-4F               50 (  4)     ld C,A                      ; dla COM1
+C029-23               51 (  6)     inc HL
+C02A-7E               52 (  7)                 ld A,(HL)                   ; wez element tabeli - PWYS
+C02B-47               53 (  4)                 ld B,A
+C02C-E6 F7            54 (  7)                 and 0F7H                    ; wytnij ewentualny bit3
+C02E-DD 77 00         55 ( 19)                 ld (IX),A                   ; ustaw PWYS
+C031-CB 58            56 (  8)                 bit 3,B
+C033-28 07            57 ( 7+)                 jr Z,bezKursora
+C035-41               58 (  4)                 ld B,C
+C036-0E 08            59 (  7)                 ld C,8                      ; dolny segment - kursor
+C038-CD AC 01         60 ( 17)                 call COM1
+C03B-48               61 (  4)                 ld C,B
+C03C-                 62       bezKursora:
+C03C-23               63 (  6)                 inc HL
+C03D-7E               64 (  7)                 ld A,(HL)                   ; wez element tabeli - DELAY
+C03E-B7               65 (  4)                 or A
+C03F-C4 0C C0         66 (10+)                 call NZ,delay               ; op√≥znienie
+C042-CD AC 01         67 ( 17)                 call COM1                   ; poka≈º znaczek
+C045-23               68 (  6)                 inc HL                      ; indeks++
+C046-18 DC            69 ( 12)                 jr loop
+C048-                 70
+C048-                 71       mess:
+C048-77 17 7F         72                 .db 77H, 17H, 7FH  ;A
+C04B-50 16 30         73                 .db 50H, 16H, 30H  ;r
+C04E-5E 15 55         74                 .db 5EH, 15H, 55H  ;d
+C051-1C 14 90         75                 .db 1CH, 14H, 90H  ;u
+C054-04 13 50         76                 .db 04H, 13H, 50H  ;i
+C057-54 12 70         77                 .db 54H, 12H, 70H  ;n
+C05A-5C 11 50         78                 .db 5CH, 11H, 50H  ;o
+C05D-DC 11 C0         79                 .db 0DCH, 11H, 0C0H ;.
+C060-5C 10 18         80                 .db 5CH, 10H, 18H
+C063-7F 10 18         81                 .db 7FH, 10H, 18H
+C066-7F 11 18         82                 .db 07FH, 11H, 18H
+C069-5C 10 00         83                 .db 5CH, 10H, 0H
+C06C-5C 11 18         84                 .db 5CH, 11H, 18H
+C06F-63 10 18         85                 .db 63H, 10H, 18H
+C072-00 10 18         86                 .db 00H, 10H, 18H
+C075-7F 11 00         87                 .db 7FH, 11H, 0H
+C078-5C 11 18         88                 .db 5CH, 11H, 18H
+C07B-77 12 00         89                 .db 77H, 12H, 0H
+C07E-5C 12 18         90                 .db 5CH, 12H, 18H
+C081-63 11 18         91                 .db 63H, 11H, 18H
+C084-00 11 18         92                 .db 00H, 11H, 18H
+C087-7F 12 00         93                 .db 7FH, 12H, 0H
+C08A-5C 12 18         94                 .db 5CH, 12H, 18H
+C08D-67 13 00         95                 .db 67H, 13H, 0H
+C090-5C 13 18         96                 .db 5CH, 13H, 18H
+C093-63 12 18         97                 .db 63H, 12H, 18H
+C096-00 12 18         98                 .db 00H, 12H, 18H
+C099-7F 13 00         99                 .db 7FH, 13H, 0H
+C09C-5C 13 18        100                 .db 5CH, 13H, 18H
+C09F-7F 14 00        101                 .db 7FH, 14H, 0H
+C0A2-5C 14 18        102                 .db 5CH, 14H, 18H
+C0A5-63 13 18        103                 .db 63H, 13H, 18H
+C0A8-00 13 18        104                 .db 00H, 13H, 18H
+C0AB-7F 14 00        105                 .db 7FH, 14H, 0H
+C0AE-5C 14 18        106                 .db 5CH, 14H, 18H
+C0B1-7F 15 00        107                 .db 7FH, 15H, 0H
+C0B4-5C 15 18        108                 .db 5CH, 15H, 18H
+C0B7-63 14 18        109                 .db 63H, 14H, 18H
+C0BA-00 14 18        110                 .db 00H, 14H, 18H
+C0BD-7F 15 00        111                 .db 7FH, 15H, 0H
+C0C0-5C 15 18        112                 .db 5CH, 15H, 18H
+C0C3-73 16 00        113                 .db 73H, 16H, 0H
+C0C6-5C 16 18        114                 .db 5CH, 16H, 18H
+C0C9-63 15 18        115                 .db 63H, 15H, 18H
+C0CC-00 15 18        116                 .db 00H, 15H, 18H
+C0CF-7F 16 00        117                 .db 7FH, 16H, 0H
+C0D2-5C 16 18        118                 .db 5CH, 16H, 18H
+C0D5-77 17 00        119                 .db 77H, 17H, 0H
+C0D8-5C 17 18        120                 .db 5CH, 17H, 18H
+C0DB-63 16 18        121                 .db 63H, 16H, 18H
+C0DE-00 16 18        122                 .db 00H, 16H, 18H
+C0E1-7F 17 00        123                 .db 7FH, 17H, 0H
+C0E4-5C 17 50        124                 .db 5CH, 17H, 50H
+C0E7-00 17 50        125                 .db 00H, 17H, 50H
+C0EA-08 12 50        126                 .db 8H, 12H, 50H
+C0ED-54 12 50        127                 .db 54H, 12H, 50H
+C0F0-08 11 18        128                 .db 8H, 11H, 18H
+C0F3-5C 11 50        129                 .db 5CH, 11H, 50H
+C0F6-5C 17 18        130                 .db 5CH, 17H, 18H
+C0F9-7F 17 18        131                 .db 7FH, 17H, 18H
+C0FC-5C 17 18        132                 .db 5CH, 17H, 18H
+C0FF-63 16 00        133                 .db 63H, 16H, 0H
+C102-5C 16 18        134                 .db 5CH, 16H, 18H
+C105-63 17 18        135                 .db 63H, 17H, 18H
+C108-00 17 18        136                 .db 0H, 17H, 18H
+C10B-7F 16 00        137                 .db 7FH, 16H, 0H
+C10E-5C 16 18        138                 .db 5CH, 16H, 18H
+C111-63 15 00        139                 .db 63H, 15H, 0H
+C114-5C 15 18        140                 .db 5CH, 15H, 18H
+C117-63 16 18        141                 .db 63H, 16H, 18H
+C11A-00 16 18        142                 .db 0H, 16H, 18H
+C11D-7F 15 18        143                 .db 7FH, 15H, 18H
+C120-5C 15 18        144                 .db 5CH, 15H, 18H
+C123-63 14 00        145                 .db 63H, 14H, 0H
+C126-5C 14 18        146                 .db 5CH, 14H, 18H
+C129-63 15 18        147                 .db 63H, 15H, 18H
+C12C-00 15 18        148                 .db 00H, 15H, 18H
+C12F-7F 14 00        149                 .db 7FH, 14H, 0H
+C132-5C 14 18        150                 .db 5CH, 14H, 18H
+C135-63 13 00        151                 .db 63H, 13H, 0H
+C138-5C 13 18        152                 .db 5CH, 13H, 18H
+C13B-63 14 18        153                 .db 63H, 14H, 18H
+C13E-00 14 18        154                 .db 00H, 14H, 18H
+C141-7F 13 00        155                 .db 7FH, 13H, 0H
+C144-5C 13 18        156                 .db 5CH, 13H, 18H
+C147-77 12 00        157                 .db 77H, 12H, 0H
+C14A-5C 12 18        158                 .db 5CH, 12H, 18H
+C14D-63 13 18        159                 .db 63H, 13H, 18H
+C150-00 13 18        160                 .db 00H, 13H, 18H
+C153-7F 12 00        161                 .db 7FH, 12H, 0H
+C156-5C 12 18        162                 .db 5CH, 12H, 18H
+C159-7F 11 00        163                 .db 7FH, 11H, 0H
+C15C-5C 11 18        164                 .db 5CH, 11H, 18H
+C15F-63 12 18        165                 .db 63H, 12H, 18H
+C162-00 12 18        166                 .db 00H, 12H, 18H
+C165-7F 11 00        167                 .db 7FH, 11H, 0H
+C168-5C 11 18        168                 .db 5CH, 11H, 18H
+C16B-63 10 00        169                 .db 63H, 10H, 0H
+C16E-5C 10 18        170                 .db 5CH, 10H, 18H
+C171-63 10 18        171                 .db 63H, 10H, 18H
+C174-00 10 18        172                 .db 00H, 10H, 18H
+C177-7F 11 00        173                 .db 7FH, 11H, 0H
+C17A-5C 11 18        174                 .db 5CH, 11H, 18H
+C17D-63 12 00        175                 .db 63H, 12H, 0H
+C180-5C 12 18        176                 .db 5CH, 12H, 18H
+C183-63 12 18        177                 .db 63H, 12H, 18H
+C186-00 12 18        178                 .db 00H, 12H, 18H
+C189-7F 11 00        179                 .db 7FH, 11H, 0H
+C18C-5C 11 18        180                 .db 5CH, 11H, 18H
+C18F-63 10 00        181                 .db 63H, 10H, 0H
+C192-5C 10 18        182                 .db 5CH, 10H, 18H
+C195-63 10 18        183                 .db 63H, 10H, 18H
+C198-00 11 18        184                 .db 00H, 11H, 18H
+C19B-7F 10 00        185                 .db 7FH, 10H, 0H
+C19E-5C 10 18        186                 .db 5CH, 10H, 18H
+C1A1-00 10 18        187                 .db 00H, 10H, 18H
+C1A4-FF              188                 .db EOM
+C1A5-                189                 ;
+C1A5-                190          ;################################################
+C1A5-                191          ;##   po ostatnim bajcie naszego programu wpisujemy 2 x AAAA
+C1A5-                192          ;.db 0AAh, 0AAh, 0AAh, 0AAh ; po tym markerze /2x AAAA/ nazwa programu
+C1A5-                193          ;################################################
+C1A5-AA AA AA AA     194        .db 0AAh, 0AAh, 0AAh, 0AAh ; marker nazwy
+C1A9-54 6F 20 6E 
+     69 65 20 41 
+     72 64 75 69 
+     6E 6F 21        195        .db "To nie Arduino!"       ; nazwa programu, max 16 znak√≥w /dla LCD 4x 20 znakow w linii/
+C1B8-FF              196        .db EOM                    ; koniec tekstu

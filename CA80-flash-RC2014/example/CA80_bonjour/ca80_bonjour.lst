@@ -1,0 +1,154 @@
+0000-                  8               .sf CA80_bonjour.sym
+0000-                  9               .in ca80.inc
+0000-            I     1
+00E0-            I     2       USER8255        .eq             $E0
+0000-            I     3       PA                  .eq         0
+0001-            I     4       PB                  .eq         1
+0002-            I     5       PC                  .eq         2
+0003-            I     6       CTRL              .eq           3
+0000-            I     7             ;
+0000-            I     8             ;LICZNIKI PROGRAMOWE
+0000-            I     9             ;
+FFE8-            I    10       LCI:      .eq $FFE8
+FFE9-            I    11       SYG:      .eq $FFE9
+FFEA-            I    12       TIME:     .eq $FFEA             ; Licznik binarny %256 (liczy w dó³) co 2 ms
+0000-            I    13             ;
+0000-            I    14             ;ZEGAR CZASU RZECZYWISTEGO
+0000-            I    15             ;
+FFEB-            I    16       MSEK:     .eq $FFEB             ; <0, 4>
+FFEC-            I    17       SETSEK:   .eq $FFEC             ; <0, 99> setne sekundy
+FFED-            I    18       SEK:      .eq $FFED             ; <0, 59> sekundy
+FFEE-            I    19       MIN:      .eq $FFEE             ; <0, 59> minuty
+FFEF-            I    20       GODZ:     .eq $FFEF             ; <0, 23> godziny
+FFF0-            I    21       DNITYG:   .eq $FFF0             ; <7, 6, 5, 4, 3, 2, 1>
+FFF1-            I    22       DNIM:     .eq $FFF1             ; <1 ... > dni miesi¹ca
+FFF2-            I    23       MIES:     .eq $FFF2             ; <1, 12> miesi¹ce
+FFF3-            I    24       LATA:     .eq $FFF3             ; <0, 99> rok
+0000-            I    25             ;
+0000-            I    26                               ;       BUFOR WYŒWIETLACZA
+0000-            I    27             ;
+FFF7-            I    28       CYF0        .eq $FFF7
+FFF8-            I    29       CYF1        .eq $FFF8
+FFF9-            I    30       CYF2        .eq $FFF9
+FFFA-            I    31       CYF3        .eq $FFFA
+FFFB-            I    32       CYF4        .eq $FFFB
+FFFC-            I    33       CYF5        .eq $FFFC
+FFFD-            I    34       CYF6        .eq $FFFD
+FFFE-            I    35       CYF7        .eq $FFFE
+0000-            I    36             ;
+0000-            I    37             ; PROCEDURY SYSTEMOWE
+0000-            I    38             ;
+0000-            I    39             ; WYŒWIETLACZ
+0000-            I    40             ;
+FFC1-            I    41       APWYS     .eq $FFC1 ; wskazuje po³o¿enie parametru wyœwietlacza
+FFF6-            I    42       PWYS      .eq $FFF6 ; parametr wyœwietlacza
+01AB-            I    43       COM           .eq       $01AB   ; COM - pokazuje znak 7-seg z rejestru C
+01AC-            I    44       COM1      .eq $01AC ; COM1 - pokazuje znak 7-seg z rejestru C bez zmiany PWYS
+0010-            I    45       CLR           .eq       $0010   ; CLR - kasowanie wyswietlacza
+0011-            I    46       CLR1      .eq $0011 ; CLR1 - kasowanie wyswietlacza bez zmiany PWYS
+01D4-            I    47       PRINT       .eq $01D4   ; PRINT - drukuje komunikat z (HL)
+01D5-            I    48       PRINT1    .eq $01D5 ; PRINT1 - drukuje komunikat z (HL) bez zmiany PWYS
+01E0-            I    49       CO        .eq $01E0 ; CO - wyswietlenie cyfry hex
+01E1-            I    50       CO1       .eq $01E1 ; CO1 - wyswietlenie cyfry hex bez zmiany PWYS
+0018-            I    51       LBYTE       .eq $0018   ; LBYTE - wyswietlenie Aku w HEX
+001B-            I    52       LBYTE1    .eq $001B ; LBYTE1 - wyswietlenie Aku w HEX bez zmiany PWYS
+0020-            I    53       LADR      .eq $0020 ; LADR - wyswietlenie HL w HEX
+022D-            I    54       LADR1     .eq $022D ; LADR1 - wyswietlenie HL w HEX bez zmiany PWYS
+022D-            I    55       CZAS        .eq $022D   ; CZAS - pokazuje czas/date
+0000-            I    56             ;
+0000-            I    57             ; KLAWIATURA
+0000-            I    58             ;
+FFC3-            I    59       CSTS      .eq $FFC3 ; CSTS - test czy klawisz nacisniety
+FFC6-            I    60       CI        .eq $FFC6 ; CI - pobranie znaku z klawiatury
+0000-            I    61             ;
+0000-            I    62             ; KLAWIATURA I WYŒWIETLACZ
+0000-            I    63             ;
+0007-            I    64       TI        .eq $0007 ; TI - pobranie znaku z echem
+0008-            I    65       TI1       .eq $0008 ; TI1 - pobranie znaku z echem bez zmiany PWYS
+01F4-            I    66       PARAM     .eq $01F4 ; PARAM - pobranie liczby 16-bit do HL z echem
+01F5-            I    67       PARAM1    .eq $01F5 ; PARAM1 - pobranie liczby 16-bit do HL z echem bez zmiany PWYS
+01F8-            I    68       PARA1     .eq $01F8 ; PARA1 - pierwsz¹ cyfrê podajemy w akumulatorze a dalej jak PARAM1
+0213-            I    69       EXPR      .eq $0213 ; EXPR - pobranie ciagu liczb 16bit na stos
+0214-            I    70       EXPR1     .eq $0214 ; EXPR1 - pobranie ciagu liczb 16bit na stos bez zmiany PWYS
+0000-            I    71             ;
+0000-            I    72             ; POMOCNICZE
+0000-            I    73             ;
+023B-            I    74       HILO      .eq $023B ; HILO - iterator, HL++, CY = !(DE >= HL)
+00C9-            I    75       SPEC      .eq $00C9 ; RET - dla obs³ugi magnetofonu
+0000-            I    76             ;
+0000-            I    77             ; OBS£UGA MAGNETOFONU
+0000-            I    78             ;
+0626-            I    79       ZMAG      .eq $0626 ; zapis na magnetofon
+067B-            I    80       ZEOF      .eq $067B ; zapis rekordu EOF
+071B-            I    81       OMAG      .eq $071B ; odczyt z magnetofonu
+FFB2-            I    82       MAGSP     .eq $FFB2 ; parametr szybkoœci zapisu
+FFB1-            I    83       DLUG      .eq $FFB1 ; d³ugoœæ rekordu danych
+0000-            I    84
+00FF-            I    85       EOM       .eq $FF
+0000-                 10               .sm code                ;
+C000-                 11               .or $c000               ; U12/C000
+C000-                 12                       ;ld  SP,$ff66                ;
+C000-                 13                       ;
+C000-                 14       .begin
+C000-CD 10 00         15 ( 17)     call CLR
+C003-80               16             .db 80H
+C004-                 17       .repeat                               ; while (--licznik)
+C004-06 10            18 (  7)                 ld B,bonjourEnd-bonjour     ; B-licznik elementÃ³w tabeli
+C006-DD 21 2D C0      19 ( 14)                 ld IX,bonjour               ; adres tabeli znaczkÃ³w
+C00A-21 C1 FF         20 ( 10)                 ld HL,APWYS
+C00D-5E               21 (  7)                 ld E,(HL)
+C00E-23               22 (  6)                 inc HL
+C00F-56               23 (  7)                 ld D,(HL)
+C010-EB               24 (  4)                 ex DE,HL
+C011-                 25       .loop2
+C011-DD 4E 10         26 ( 19)                 ld C,(IX+10H)               ; wez element tabeli - PWYS
+C014-71               27 (  7)                 ld (HL),C                   ; ustaw PWYS
+C015-0E 08            28 (  7)                 ld C,08H                    ; kod dolnego segmentu - kursor
+C017-CD AC 01         29 ( 17)                 call COM1                   ; pokaÅ¼ znaczek
+C01A-DD 4E 20         30 ( 19)     ld C,(IX+2*10H)             ; wez element tabeli - DELAY
+C01D-CD 5D C0         31 ( 17)                 call delay                  ; opÃ³znienie
+C020-DD 4E 00         32 ( 19)                 ld C,(IX+0)                 ; wez element tabeli - ZNAK
+C023-CD AC 01         33 ( 17)                 call COM1                   ; pokaÅ¼ znaczek
+C026-DD 23            34 ( 10)                 inc IX                      ; indeks++
+C028-10 E7            35 ( 8+)                 djnz .loop2                 ; while (--licznik)
+C02A-C9               36 ( 10)                 ret                         ; USUÅ Å»EBY ZAPÄTLIÄ†
+C02B-18 D7            37 ( 12)                 jr .repeat
+C02D-                 38               ;
+C02D-                 39
+C02D-                 40       bonjour:
+C02D-7C 5C 54 0E 
+     63 62 21 00 
+     00 00 00 00 
+     00 00 00 00      41               .db 7CH, 5CH, 54H, 0EH, 63H, 62H, 21H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H
+C03D-                 42       bonjourEnd:
+C03D-17 16 15 14 
+     13 12 11 10 
+     17 16 15 14 
+     13 12 11 10      43               .db 17H, 16H, 15H, 14H, 13H, 12H, 11H, 10H, 17H, 16H, 15H, 14H, 13H, 12H, 11H, 10H
+C04D-50 30 60 20 
+     35 45 50 7F 
+     35 45 50 7F 
+     35 45 50 7F      44               .db 50H, 30H, 60H, 20H, 35H, 45H, 50H, 7FH, 35H, 45H, 50H, 7FH, 35H, 45H, 50H, 7FH
+C05D-                 45                 ;
+C05D-C5               46 ( 11) delay:  push    BC
+C05E-F5               47 ( 11)         push    AF
+C05F-41               48 (  4)         ld      B,C
+C060-                 49       .delay
+C060-76               50 (  4)         halt            ; 2ms
+C061-76               51 (  4)         halt            ; 2ms
+C062-76               52 (  4)         halt            ; 2ms
+C063-10 FB            53 ( 8+)         djnz    .delay  ; while( --B )
+C065-F1               54 ( 10)         pop     AF
+C066-C1               55 ( 10)         pop     BC
+C067-C9               56 ( 10)         ret
+C068-                 57          ;################################################
+C068-                 58          ;##   po ostatnim bajcie naszego programu wpisujemy 2 x AAAA
+C068-                 59          ;.db 0AAh, 0AAh, 0AAh, 0AAh ; po tym markerze /2x AAAA/ nazwa programu
+C068-                 60          ;################################################
+C068-AA AA AA AA      61        .db 0AAh, 0AAh, 0AAh, 0AAh     ; marker nazwy
+C06C-42 6F 6E 6A 
+     6F 75 72         62        .db "Bonjour"                  ; nazwa programu, max 16 znakÃ³w /dla LCD 4x 20 znakow w linii/
+C073-FF               63        .db EOM                        ; koniec tekstu
+C074-                 64
+C074-                 65       ; koniec zabawy. :-)
+C074-                 66

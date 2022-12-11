@@ -1,0 +1,3 @@
+EOM             .EQ     $000000FF   RefCount=  1, Mem=Code, Source=magnetofon_demo.asm 
+FMAG            .EQ     $00004337   RefCount=  3, Mem=Code, Source=magnetofon_demo.asm 
+.LOOP           .EQ     $0000D003   RefCount=  1, Mem=Code, Source=magnetofon_demo.asm 
