@@ -18,3 +18,5 @@
 - Testowany na CA80 mini oraz CA180.
 - Na CA180 nie działa prawidłowo praca krokowa (należy zmienić ustawienia CTC).
 - Nie sprawdzany na RC2014.
+## Pliki dla CA80
+- Zawartość folderu SD-MIKSID należy skopiować na kartę microSD o możliwie małej pojemności.
