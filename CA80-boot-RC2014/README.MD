@@ -14,3 +14,12 @@
 - Z³¹cze "Serial" jest zgodne z Z80 MBC-2. Mo¿na je u¿yæ do programowania AVR (Arduino IDE) lub pod³¹czyæ terminal (np. uTerm).
 - ![Spód](https://raw.githubusercontent.com/ZegarNotAvailable/CA80-na-RC2014/main/CA80-boot-RC2014/CA80-boot-b.png)
 - Z³¹cza modu³ów SD i RTC nie zmieœci³y siê do góry - przepraszam.
+## UWAGA!!
+### Nale¿y zwróciæ uwagê na sygna³ MEM_EN.
+- Projekt jest wzorowany na Z80-MBC2, wiêc s¹ te¿ tego konsekwencje.
+- MEM_EN jest odpowiednikiem RAM_CE2. W pierwowzorze by³a tylko jedna koœæ RAM, a w RC2014 mo¿e wyst¹piæ kilka modu³ów z jak¹œ pamiêci¹, wiêc do ka¿dego musi ten sygna³ dotrzeæ.
+- Wybra³em PIN 40 (USER4), poniewa¿ nie wystêpuje on w oryginalnym RC, ¿eby zminimalizowaæ ryzyko konfliktu z innym modu³em.
+- Nie wiedzia³em, ¿e p³yty bazowe (backplane) np. SC112, maj¹ po³¹czenia s¹siednich gniazd 40 - 80. By³ to pierwszy pomys³ na "daisy chain" (wianek ze stokrotek) IEI - IEO.
+- Z tego powodu mo¿e dojœæ do przerwy w sygnale MEM_EN. 
+### Modu³y zawieraj¹ce pamiêæ i CA80-boot powinny mieæ zwarte piny USER4 i USER8 (40 i 80) oraz znajdowaæ siê w s¹siednich gniazdach!!!
+- Mo¿na równie¿ po³¹czyæ w/w piny pod backplane.
