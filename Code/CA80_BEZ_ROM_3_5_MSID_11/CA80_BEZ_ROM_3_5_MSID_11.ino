@@ -10,8 +10,14 @@
 #include "Arduino.h"
 #include "z80-disassembler.h"
 
+#define VER "CA80_BEZ_ROM_3_5_MSID_11" //For info
 //#define Z180                // Zakomentuj jesli Z80
 //#define DEBUG
+// ------------------------------------------------------------------------------
+//  Stale klawiatury
+// ------------------------------------------------------------------------------
+
+#define PCF_KBD    0x20     //Adres PCF8574A 0x38 , dla PCF8574 0x20
 
 #define WAIT_EN      11    // PD3 pin 17   
 #define MAXDATALENGTH 5
@@ -370,6 +376,7 @@ void setup()
 
   Wire.begin();                                   // Wake up I2C bus
   Serial.begin(115200);
+  Serial.println(F(VER));
   pinsSetings();
   Serial.println(F("Loading..."));
   readFile(fileName);
@@ -787,7 +794,7 @@ void resetCPU()
 //  Stale klawiatury
 // ------------------------------------------------------------------------------
 
-const byte PCF_kbd = 0x38;     //Adres PCF8574A 0x38 , dla PCF8574 0x20
+//const byte PCF_kbd = 0x38;     //Adres PCF8574A 0x38 , dla PCF8574 0x20
 // ------------------------------------------------------------------------------
 // Kody klawiszy tworzymy wg. wzoru: starsza cyfra nr kolumny, mlodsza ma zero na pozycji
 // numeru wiersza
@@ -893,7 +900,7 @@ void sendKeyCode(byte key)
 
 void sendKey (byte k)
 {
-  Wire.beginTransmission(PCF_kbd);
+  Wire.beginTransmission(PCF_KBD);
   Wire.write(k);                    //Wysylamy kod klawisza
   Wire.endTransmission();
 }
