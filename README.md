@@ -9,7 +9,7 @@
 - MIK1 - UART na i8251.
 - Płyty bazowej nie projektuję, bo można wybrać z gotowych np. [sc112](https://smallcomputercentral.com/sc112-modular-backplane-rc2014/) lub [tapy](http://www.vtsys.pl/moduly-rc2014/basic-backplane-4/).
 ### Dodatkowe moduły rozszerzające możliwości i ułatwiające pracę.
-- LCD umożliwiający wyświtlenie większej liczby danych.
+- LCD umożliwiający wyświetlenie większej liczby danych.
 - CAFL emulator magnetofonu - pamięć masowa.
 - Bootloader oparty o AVR. Pomysł zapożyczony z projektu [Z80-MBC2](https://hackaday.io/project/159973-z80-mbc2-a-4-ics-homebrew-z80-computer).
 ### Wykorzystanie kalkulatora ELWRO144 jako terminala - zintegrowanej klawiatury z wyświetlaczem.
