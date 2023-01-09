@@ -106,12 +106,12 @@ void showSecondLine();
 void showConditions(byte c);
 void waitResume();
 
-void sendNop()
+void sendNop(int NOPsToSend)
 {
-  sendDataBus(0);
-  sendDataBus(0);
-  sendDataBus(0);
-  sendDataBus(0);
+  for(int i = 0; i < NOPsToSend; i++)
+  {
+    sendDataBus(0);     //Z80 NOP 
+  }
 }
 
 void readRTC()
@@ -147,7 +147,7 @@ void dayOfWeek()
 
 void sendTime()
 {
-  //digitalWrite(MEM_EN_, LOW);         // Force the RAM in HiZ (CE2 = LOW)
+  sendNop(4);
   loadHL(CA80_SEC);                   // Set Z80 HL = SEC (used as pointer to RAM);
   for (byte i = 0; i < 7; i++)
   {
@@ -225,7 +225,7 @@ void sendFilesFromSD()
 {
   byte j;
   Serial.println();
-  sendNop();
+  sendNop(32);
   for (j = 0; j < namesNumber; j++)
   {
     fileName = String(String(fileNames[j]) + EXTENSION);
@@ -233,6 +233,7 @@ void sendFilesFromSD()
     {
       Serial.print(F("Loading "));
       Serial.println(fileName);
+      sendNop(4);
       sendFileFromSD(fileName);
     }
     else
