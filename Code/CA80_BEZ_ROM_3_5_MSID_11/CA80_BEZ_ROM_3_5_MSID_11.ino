@@ -263,7 +263,7 @@ void sendRecord()
     }
     byte suma = getByteFromFile(); // zakladam, ze plik jest poprawny i nie sprawdzam sumy
     // ale trzeba ja przeczytac!!!
-    if (CR == myFile.read())   // tak jak znaki CR
+    if (CR == myFile.read())   // tak jak znaki CR (jezeli sa)
     {
       myFile.read();   // i LF na koncu rekordu :-)
     }
