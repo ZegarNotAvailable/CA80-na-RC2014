@@ -10,8 +10,9 @@
 #include "Arduino.h"
 #include "z80-disassembler.h"
 
-#define VER "CA80_BEZ_ROM_3_5_MSID_11" //For info
-//#define Z180                // Zakomentuj jesli Z80
+#define VER "CA80_BEZ_ROM_3_5_MSID_12"  //For info
+#define CR 0xd                          //ASCII CR
+//#define Z180                          // Zakomentuj jesli Z80
 //#define DEBUG
 // ------------------------------------------------------------------------------
 //  Stale klawiatury
@@ -108,9 +109,9 @@ void waitResume();
 
 void sendNop(int NOPsToSend)
 {
-  for(int i = 0; i < NOPsToSend; i++)
+  for (int i = 0; i < NOPsToSend; i++)
   {
-    sendDataBus(0);     //Z80 NOP 
+    sendDataBus(0);     //Z80 NOP
   }
 }
 
@@ -262,8 +263,10 @@ void sendRecord()
     }
     byte suma = getByteFromFile(); // zakladam, ze plik jest poprawny i nie sprawdzam sumy
     // ale trzeba ja przeczytac!!!
-    myFile.read();   // tak jak znaki CR
-    myFile.read();   // i LF na koncu rekordu :-)
+    if (CR == myFile.read())   // tak jak znaki CR
+    {
+      myFile.read();   // i LF na koncu rekordu :-)
+    }
   }
 }
 
@@ -905,4 +908,3 @@ void sendKey (byte k)
   Wire.write(k);                    //Wysylamy kod klawisza
   Wire.endTransmission();
 }
-
