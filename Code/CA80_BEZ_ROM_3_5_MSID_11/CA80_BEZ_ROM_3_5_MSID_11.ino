@@ -10,8 +10,8 @@
 #include "Arduino.h"
 #include "z80-disassembler.h"
 
-#define VER "CA80_BEZ_ROM_3_5_MSID_12"  //For info
-#define CR 0xd                          //ASCII CR
+#define VER "CA80_BEZ_ROM_3_5_MSID_12"  // For info
+#define CR 0xd                          // ASCII CR for GH CR-LF issue
 //#define Z180                          // Zakomentuj jesli Z80
 //#define DEBUG
 // ------------------------------------------------------------------------------
@@ -654,17 +654,12 @@ void listing()
 #define WAIT_RES_LOW    PORTB &= B11111110
 #define BUSREQ_HIGH     PORTD |= B01000000
 #define BUSREQ_LOW      PORTD &= B10111111
-#define RAM_CE_HIGH     PORTB |= B00000100
-#define RAM_CE_LOW      PORTB &= B11111011
+#define MEM_EN_HIGH     PORTB |= B00000100
+#define MEM_EN_LOW      PORTB &= B11111011
 #define TEST_RD         PINC & B00001000  //PC3
 
 void waitResume()
 {
-  // Control bus sequence to exit from a wait state (M I/O write cycle)
-  //digitalWrite(BUSREQ_, LOW);                 // Request for a DMA
-  //digitalWrite(WAIT_RES_, LOW);               // Reset WAIT FF exiting from WAIT state
-  //digitalWrite(WAIT_RES_, HIGH);              // Now Z80 is in DMA, so it's safe set WAIT_RES_ HIGH again
-  //digitalWrite(BUSREQ_, HIGH);                // Resume Z80 from DMA
   BUSREQ_LOW;                         // Request for a DMA
   WAIT_RES_LOW;                       // Now is safe reset WAIT FF (exiting from WAIT state)
   delayMicroseconds(2);               // Wait 2us
@@ -686,23 +681,21 @@ void ramEN()
 {
   DDRA = 0x00;                        // Configure Z80 data bus D0-D7 (PA0-PA7) as input...
   PORTA = 0xFF;                       // ...with pull-up
-  RAM_CE_HIGH;
+  MEM_EN_HIGH;
 }
 
 void sendDataBus(byte data)
 {
   waitRD();
-  RAM_CE_LOW;                         // Force the RAM in HiZ (CE2 = LOW)
+  MEM_EN_LOW;                         // Force the RAM in HiZ (CE2 = LOW)
   DDRA = 0xFF;                        // Configure Z80 data bus D0-D7 (PA0-PA7) as output
   PORTA = data;                       // Write data on data bus
   BUSREQ_LOW;                         // Request for a DMA
   WAIT_RES_LOW;                       // Now is safe reset WAIT FF (exiting from WAIT state)
   delayMicroseconds(2);               // Wait 2us just to be sure that Z80 read the data and go HiZ
-  //waitEND();
   WAIT_RES_HIGH;
   ramEN();
   BUSREQ_HIGH;                        // Resume Z80 from DMA
-  //waitRD();
 }
 
 void loadByteToRAM(byte value)
