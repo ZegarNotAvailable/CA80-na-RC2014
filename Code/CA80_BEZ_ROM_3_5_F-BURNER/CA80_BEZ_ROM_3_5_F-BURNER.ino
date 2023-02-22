@@ -10,7 +10,7 @@
 #include "Arduino.h"
 #include "z80-disassembler.h"
 
-#define VER "CA80_BEZ_ROM_3_5_MSID_12"  // For info
+#define VER "CA80-BEZ-ROM-3-5-F-BURNER"  // For info
 #define CR 0xd                          // ASCII CR for GH CR-LF issue
 #define RC2014 1                        // 1 - RC2014, 0 - CA80mini
 //#define Z180                          // Zakomentuj jesli Z80
@@ -244,6 +244,14 @@ void sendFilesFromSD()
       Serial.println(F(" doesn't exist."));
     }
   }
+  fileName = "ca8000.HEX";
+  if (SD.exists(fileName))
+    {
+      Serial.print(F("Loading "));
+      Serial.println(fileName);
+      sendNop(4);
+      sendFileFromSD8000(fileName);
+    }  
 }
 
 void sendRecord()
@@ -252,6 +260,36 @@ void sendRecord()
   {
     byte i = getByteFromFile();
     word adr = getAdrFromFile();
+    byte typ = getByteFromFile();
+    if (typ == 0)
+    {
+      sendDataToCA80(i, adr);
+    }
+    else
+    {
+      Serial.print(F("End of file: "));
+      Serial.println(fileName);
+    }
+    byte suma = getByteFromFile(); // zakladam, ze plik jest poprawny i nie sprawdzam sumy
+    // ale trzeba ja przeczytac!!!
+    if (CR == myFile.read())   // tak jak znaki CR (jezeli sa)
+    {
+      myFile.read();   // i LF na koncu rekordu :-)
+    }
+  }
+}
+
+void sendRecord8000()
+{
+  if (myFile.available())
+  {
+    byte i = getByteFromFile();
+    word adr = getAdrFromFile();
+    adr += 0x8000;
+    if (adr > 0xf000)
+    {
+      adr -= 0x1000;
+    }
     byte typ = getByteFromFile();
     if (typ == 0)
     {
@@ -325,6 +363,30 @@ void sendFileFromSD(String fileName)
       if (c  == 0x3a)
       {
         sendRecord();
+      }
+      else
+      {
+        Serial.print(F("Wrong format file: "));
+        Serial.println(fileName);
+        myFile.close();
+        return;
+      }
+    }
+    myFile.close();
+  }
+}
+
+void sendFileFromSD8000(String fileName)
+{
+  myFile = SD.open(fileName); // re-open the file for reading:
+  if (myFile)
+  {
+    while (myFile.available())// read from the file until there's nothing else in it
+    {
+      byte c = (myFile.read());
+      if (c  == 0x3a)
+      {
+        sendRecord8000();
       }
       else
       {
